@@ -1,6 +1,6 @@
 
   {
-      "name": "Taxi Order Tracking Interface",
+      "name": "taxi",
       "version": "0.1.0",
       "private": true,
       "dependencies": {

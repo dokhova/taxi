@@ -1,7 +1,7 @@
 
-  # Taxi Order Tracking Interface
+  # taxi
 
-  This is a code bundle for Taxi Order Tracking Interface. The original project is available at https://www.figma.com/design/3bVUa3RKjj9vUf2C4oUVuC/Taxi-Order-Tracking-Interface.
+  This is a code bundle for taxi. The original project is available at https://www.figma.com/design/3bVUa3RKjj9vUf2C4oUVuC/taxi.
 
   ## Running the code
 
