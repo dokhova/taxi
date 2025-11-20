@@ -7,7 +7,7 @@ interface RelaxationModalProps {
   onClose: () => void;
 }
 
-type Tab = "meditation" | "breathing" | "whitenoise";
+type Tab = "meditation" | "ambient" | "nature";
 
 export function RelaxationModal({ isOpen, onClose }: RelaxationModalProps) {
   const [activeTab, setActiveTab] = useState<Tab>("meditation");
@@ -21,14 +21,14 @@ export function RelaxationModal({ isOpen, onClose }: RelaxationModalProps) {
 
   const audioFiles = {
     meditation: "/mp3/pause_ru.mp3",
-    breathing: "/mp3/4444.mp3",
-    whitenoise: "", // No audio file yet
+    ambient: "/mp3/ambient.mp3",
+    nature: "/mp3/nature.mp3",
   };
 
   const durations = {
     meditation: 0, // Will be set from audio metadata
-    breathing: 0, // Will be set from audio metadata
-    whitenoise: 300,
+    ambient: 0, // Will be set from audio metadata
+    nature: 0, // Will be set from audio metadata
   };
   
   const [duration, setDuration] = useState(180);
@@ -177,14 +177,14 @@ export function RelaxationModal({ isOpen, onClose }: RelaxationModalProps) {
   };
 
   const handlePrevious = () => {
-    const tabs: Tab[] = ["meditation", "breathing", "whitenoise"];
+    const tabs: Tab[] = ["meditation", "ambient", "nature"];
     const currentIndex = tabs.indexOf(activeTab);
     const prevIndex = currentIndex === 0 ? tabs.length - 1 : currentIndex - 1;
     setActiveTab(tabs[prevIndex]);
   };
 
   const handleNext = () => {
-    const tabs: Tab[] = ["meditation", "breathing", "whitenoise"];
+    const tabs: Tab[] = ["meditation", "ambient", "nature"];
     const currentIndex = tabs.indexOf(activeTab);
     const nextIndex = (currentIndex + 1) % tabs.length;
     setActiveTab(tabs[nextIndex]);
@@ -193,7 +193,7 @@ export function RelaxationModal({ isOpen, onClose }: RelaxationModalProps) {
   const handleShuffle = () => {
     if (!isShuffle) {
       setIsShuffle(true);
-      const tabs: Tab[] = ["meditation", "breathing", "whitenoise"];
+      const tabs: Tab[] = ["meditation", "ambient", "nature"];
       const otherTabs = tabs.filter(t => t !== activeTab);
       const randomTab = otherTabs[Math.floor(Math.random() * otherTabs.length)];
       setActiveTab(randomTab);
@@ -211,11 +211,13 @@ export function RelaxationModal({ isOpen, onClose }: RelaxationModalProps) {
       />
 
       <div className="relative w-full max-w-3xl">
-        {/* Close button - with safe area for mobile */}
+        {/* Close button - positioned outside modal on mobile, inside on desktop */}
         <button
           onClick={onClose}
-          className="absolute -top-12 right-4 md:top-4 md:right-4 z-10 w-10 h-10 bg-black/60 hover:bg-black/80 backdrop-blur-xl rounded-full flex items-center justify-center transition-colors border border-white/20"
-          style={{ top: 'max(-3rem, env(safe-area-inset-top, -3rem))' }}
+          className="absolute right-0 z-10 w-10 h-10 bg-black/60 hover:bg-black/80 backdrop-blur-xl rounded-full flex items-center justify-center transition-colors border border-white/20 md:top-4 md:right-4"
+          style={{ 
+            top: 'calc(env(safe-area-inset-top, 0px) + 0.5rem)',
+          }}
         >
           <X className="w-5 h-5 text-white/90" />
         </button>
@@ -225,7 +227,7 @@ export function RelaxationModal({ isOpen, onClose }: RelaxationModalProps) {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.9 }}
-          className="relative w-full bg-black/40 backdrop-blur-2xl rounded-xl shadow-2xl overflow-hidden p-4 md:p-6 border border-white/10 max-h-[90vh] overflow-y-auto"
+          className="relative w-full bg-black/40 backdrop-blur-2xl rounded-xl shadow-2xl overflow-hidden p-4 md:p-6 border border-white/10 max-h-[90vh] overflow-y-auto mt-14 md:mt-0"
         >
           <div className="flex flex-col md:flex-row gap-4 md:gap-6">
             {/* Left side - Sessions list */}
@@ -270,49 +272,11 @@ export function RelaxationModal({ isOpen, onClose }: RelaxationModalProps) {
                 )}
               </motion.button>
 
-              {/* Breathing */}
+              {/* Ambient */}
               <motion.button
-                onClick={() => setActiveTab("breathing")}
+                onClick={() => setActiveTab("ambient")}
                 className={`w-full rounded-2xl p-4 text-left transition-all flex items-center gap-4 ${
-                  activeTab === "breathing"
-                    ? "bg-white/10"
-                    : "bg-transparent hover:bg-white/5"
-                }`}
-                whileHover={{ scale: 1.01 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                {/* Icon */}
-                <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center flex-shrink-0">
-                  <div className="w-6 h-6 rounded-full border-2 border-white/70 flex items-center justify-center">
-                    <div className="w-2 h-2 rounded-full bg-white/70" />
-                  </div>
-                </div>
-                
-                <div className="flex-1">
-                  <h3 className="text-white">
-                    Ровный темп
-                  </h3>
-                  <p className="text-white/50 text-sm">
-                    Дыхание
-                  </p>
-                </div>
-
-                {/* Play indicator */}
-                {activeTab === "breathing" ? (
-                  <div className="w-8 h-8 flex items-center justify-center">
-                    <div className="w-1 h-4 bg-white/70 rounded-full mr-0.5" />
-                    <div className="w-1 h-4 bg-white/70 rounded-full" />
-                  </div>
-                ) : (
-                  <ChevronRight className="w-5 h-5 text-white/40" />
-                )}
-              </motion.button>
-
-              {/* White noise */}
-              <motion.button
-                onClick={() => setActiveTab("whitenoise")}
-                className={`w-full rounded-2xl p-4 text-left transition-all flex items-center gap-4 ${
-                  activeTab === "whitenoise"
+                  activeTab === "ambient"
                     ? "bg-white/10"
                     : "bg-transparent hover:bg-white/5"
                 }`}
@@ -333,12 +297,52 @@ export function RelaxationModal({ isOpen, onClose }: RelaxationModalProps) {
                     Мягкий фон
                   </h3>
                   <p className="text-white/50 text-sm">
-                    Мелодия
+                    Амбиент
                   </p>
                 </div>
 
                 {/* Play indicator */}
-                {activeTab === "whitenoise" ? (
+                {activeTab === "ambient" ? (
+                  <div className="w-8 h-8 flex items-center justify-center">
+                    <div className="w-1 h-4 bg-white/70 rounded-full mr-0.5" />
+                    <div className="w-1 h-4 bg-white/70 rounded-full" />
+                  </div>
+                ) : (
+                  <ChevronRight className="w-5 h-5 text-white/40" />
+                )}
+              </motion.button>
+
+              {/* Nature */}
+              <motion.button
+                onClick={() => setActiveTab("nature")}
+                className={`w-full rounded-2xl p-4 text-left transition-all flex items-center gap-4 ${
+                  activeTab === "nature"
+                    ? "bg-white/10"
+                    : "bg-transparent hover:bg-white/5"
+                }`}
+                whileHover={{ scale: 1.01 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                {/* Icon */}
+                <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center flex-shrink-0">
+                  <div className="relative w-6 h-6">
+                    <div className="absolute inset-0 rounded-full border-2 border-white/70" />
+                    <div className="absolute inset-1 rounded-full border-2 border-white/50" />
+                    <div className="absolute inset-2 rounded-full border-2 border-white/30" />
+                  </div>
+                </div>
+                
+                <div className="flex-1">
+                  <h3 className="text-white">
+                    Звук природы
+                  </h3>
+                  <p className="text-white/50 text-sm">
+                    Атмосфера
+                  </p>
+                </div>
+
+                {/* Play indicator */}
+                {activeTab === "nature" ? (
                   <div className="w-8 h-8 flex items-center justify-center">
                     <div className="w-1 h-4 bg-white/70 rounded-full mr-0.5" />
                     <div className="w-1 h-4 bg-white/70 rounded-full" />
@@ -354,10 +358,10 @@ export function RelaxationModal({ isOpen, onClose }: RelaxationModalProps) {
               {/* Title */}
               <div className="text-center mb-3 md:mb-4">
                 <p className="text-white/60 text-xs md:text-sm">
-                  {activeTab === "meditation" ? "Тишина в пути" : activeTab === "breathing" ? "Ровный темп" : "Мягкий фон"}
+                  {activeTab === "meditation" ? "Тишина в пути" : activeTab === "ambient" ? "Мягкий фон" : "Звук природы"}
                 </p>
                 <h3 className="text-white text-sm md:text-base">
-                  {activeTab === "meditation" ? "Медитация" : activeTab === "breathing" ? "Дыхание" : "Мелодия"}
+                  {activeTab === "meditation" ? "Медитация" : activeTab === "ambient" ? "Амбиент" : "Атмосфера"}
                 </h3>
               </div>
 
@@ -379,7 +383,7 @@ export function RelaxationModal({ isOpen, onClose }: RelaxationModalProps) {
                       cx="50%"
                       cy="50%"
                       r="45%"
-                      stroke={activeTab === "meditation" ? "#34AB53" : activeTab === "breathing" ? "#4285F4" : "#E74639"}
+                      stroke={activeTab === "meditation" ? "#34AB53" : activeTab === "ambient" ? "#E74639" : "#E74639"}
                       strokeWidth="8"
                       fill="none"
                       strokeDasharray={2 * Math.PI * 60}
@@ -410,19 +414,8 @@ export function RelaxationModal({ isOpen, onClose }: RelaxationModalProps) {
                 <span className="text-white/50 text-xs md:text-sm">{formatTime(duration)}</span>
               </div>
 
-              {/* Error message if audio files not found */}
-              {audioError && (
-                <div className="w-full px-2 md:px-4 mb-3 md:mb-4">
-                  <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-3 text-center">
-                    <p className="text-white/90 text-xs md:text-sm mb-1">
-                      Аудиофайл не найден
-                    </p>
-                    <p className="text-white/60 text-xs">
-                      Загрузите MP3 файлы в GitHub
-                    </p>
-                  </div>
-                </div>
-              )}
+              {/* Error message */}
+              {/* Error notification removed - user doesn't need to see it */}
 
               {/* Controls */}
               <div className="flex items-center justify-center gap-2 md:gap-4">

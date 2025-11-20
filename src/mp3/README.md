@@ -3,7 +3,8 @@
 Эта папка содержит MP3 файлы для плейера релаксации:
 
 - **pause_ru.mp3** - Медитация "Тишина в пути"
-- **4444.mp3** - Дыхательная практика "Ровный темп"
+- **ambient.mp3** - Амбиент "Мягкий фон"
+- **nature.mp3** - Атмосфера "Звук природы"
 
 ## ⚠️ ВАЖНО: Файлы не загружены!
 
@@ -27,7 +28,8 @@
 1. Нажмите кнопку **"Add file"** → **"Upload files"**
 2. Перетащите или выберите файлы:
    - `pause_ru.mp3`
-   - `4444.mp3`
+   - `ambient.mp3`
+   - `nature.mp3`
 3. Напишите commit message: "Add audio files for relaxation player"
 4. Нажмите **"Commit changes"**
 
@@ -35,7 +37,8 @@
 1. Vercel автоматически начнёт деплой (займёт 1-2 минуты)
 2. После деплоя файлы будут доступны по адресам:
    - `https://demo.spokspace.com/mp3/pause_ru.mp3`
-   - `https://demo.spokspace.com/mp3/4444.mp3`
+   - `https://demo.spokspace.com/mp3/ambient.mp3`
+   - `https://demo.spokspace.com/mp3/nature.mp3`
 
 ### Шаг 5: Проверьте работу
 1. Откройте `https://demo.spokspace.com`
