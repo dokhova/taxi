@@ -15,6 +15,8 @@ export function RelaxationModal({ isOpen, onClose }: RelaxationModalProps) {
   const [currentTime, setCurrentTime] = useState(0);
   const [isRepeat, setIsRepeat] = useState(false);
   const [isShuffle, setIsShuffle] = useState(false);
+  const [audioLoaded, setAudioLoaded] = useState(false);
+  const [audioError, setAudioError] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const audioFiles = {
@@ -23,14 +25,45 @@ export function RelaxationModal({ isOpen, onClose }: RelaxationModalProps) {
     whitenoise: "", // No audio file yet
   };
 
-  const duration = activeTab === "meditation" ? 180 : activeTab === "breathing" ? 120 : 300; // 3:00 or 2:00 or 5:00 in seconds
+  const durations = {
+    meditation: 0, // Will be set from audio metadata
+    breathing: 0, // Will be set from audio metadata
+    whitenoise: 300,
+  };
+  
+  const [duration, setDuration] = useState(180);
 
   // Initialize audio element
   useEffect(() => {
     if (audioFiles[activeTab]) {
+      console.log("Loading audio:", audioFiles[activeTab]);
+      setAudioLoaded(false);
+      setAudioError(false);
+      
       const audio = new Audio(audioFiles[activeTab]);
       audio.loop = isRepeat;
+      audio.preload = "metadata";
       audioRef.current = audio;
+
+      // Handle metadata loaded (get duration)
+      const handleLoadedMetadata = () => {
+        console.log("Audio metadata loaded. Duration:", audio.duration);
+        setDuration(Math.floor(audio.duration));
+        setAudioLoaded(true);
+      };
+
+      // Handle audio can play
+      const handleCanPlay = () => {
+        console.log("Audio can play");
+        setAudioLoaded(true);
+      };
+
+      // Handle audio load error
+      const handleError = (e: ErrorEvent) => {
+        console.error("Audio load error:", e);
+        setAudioError(true);
+        setAudioLoaded(false);
+      };
 
       // Update current time
       const handleTimeUpdate = () => {
@@ -45,32 +78,48 @@ export function RelaxationModal({ isOpen, onClose }: RelaxationModalProps) {
         }
       };
 
+      audio.addEventListener("loadedmetadata", handleLoadedMetadata);
+      audio.addEventListener("canplay", handleCanPlay);
+      audio.addEventListener("error", handleError as any);
       audio.addEventListener("timeupdate", handleTimeUpdate);
       audio.addEventListener("ended", handleEnded);
 
       return () => {
+        audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
+        audio.removeEventListener("canplay", handleCanPlay);
+        audio.removeEventListener("error", handleError as any);
         audio.removeEventListener("timeupdate", handleTimeUpdate);
         audio.removeEventListener("ended", handleEnded);
         audio.pause();
         audio.src = "";
       };
+    } else {
+      // For whitenoise without audio file
+      setAudioLoaded(false);
+      setDuration(300);
     }
   }, [activeTab, isRepeat]);
 
   // Handle play/pause
   useEffect(() => {
-    if (audioRef.current) {
+    if (audioRef.current && audioLoaded) {
       if (isPlaying) {
-        audioRef.current.play().catch(err => console.error("Audio play error:", err));
+        console.log("Playing audio");
+        audioRef.current.play().catch(err => {
+          console.error("Audio play error:", err);
+          setAudioError(true);
+          setIsPlaying(false);
+        });
       } else {
         audioRef.current.pause();
       }
     }
-  }, [isPlaying]);
+  }, [isPlaying, audioLoaded]);
 
-  // Fallback timer for tracks without audio files
+  // Fallback timer for tracks without audio files or if audio fails
   useEffect(() => {
-    if (isOpen && isPlaying && !audioFiles[activeTab]) {
+    if (isOpen && isPlaying && (!audioFiles[activeTab] || audioError)) {
+      console.log("Using fallback timer");
       const interval = setInterval(() => {
         setCurrentTime((prev) => {
           if (prev >= duration) {
@@ -86,7 +135,7 @@ export function RelaxationModal({ isOpen, onClose }: RelaxationModalProps) {
       }, 1000);
       return () => clearInterval(interval);
     }
-  }, [isOpen, isPlaying, duration, isRepeat, activeTab]);
+  }, [isOpen, isPlaying, duration, isRepeat, activeTab, audioError]);
 
   useEffect(() => {
     // Reset time and stop playing when switching tabs
