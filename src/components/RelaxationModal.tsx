@@ -36,31 +36,71 @@ export function RelaxationModal({ isOpen, onClose }: RelaxationModalProps) {
   // Initialize audio element
   useEffect(() => {
     if (audioFiles[activeTab]) {
-      console.log("Loading audio:", audioFiles[activeTab]);
+      console.log("🔄 Loading audio:", audioFiles[activeTab]);
       setAudioLoaded(false);
       setAudioError(false);
       
-      const audio = new Audio(audioFiles[activeTab]);
+      // First, check if file exists
+      fetch(audioFiles[activeTab], { method: 'HEAD' })
+        .then(response => {
+          console.log("📡 File check response:", {
+            status: response.status,
+            ok: response.ok,
+            contentType: response.headers.get('content-type'),
+            url: response.url
+          });
+          
+          if (!response.ok) {
+            console.error("❌ File not found (404) or server error:", response.status);
+            setAudioError(true);
+            return;
+          }
+        })
+        .catch(err => {
+          console.error("❌ Network error checking file:", err);
+        });
+      
+      const audio = new Audio();
+      audio.crossOrigin = "anonymous";
       audio.loop = isRepeat;
       audio.preload = "metadata";
-      audioRef.current = audio;
-
+      
       // Handle metadata loaded (get duration)
       const handleLoadedMetadata = () => {
-        console.log("Audio metadata loaded. Duration:", audio.duration);
+        console.log("✅ Audio metadata loaded. Duration:", audio.duration);
         setDuration(Math.floor(audio.duration));
         setAudioLoaded(true);
       };
 
       // Handle audio can play
       const handleCanPlay = () => {
-        console.log("Audio can play");
+        console.log("✅ Audio can play");
         setAudioLoaded(true);
       };
 
       // Handle audio load error
-      const handleError = (e: ErrorEvent) => {
-        console.error("Audio load error:", e);
+      const handleError = (e: Event) => {
+        const audioElement = e.target as HTMLAudioElement;
+        console.error("❌ Audio element error event:", {
+          errorCode: audioElement.error?.code,
+          errorMessage: audioElement.error?.message,
+          src: audioElement.src,
+          networkState: audioElement.networkState,
+          readyState: audioElement.readyState,
+          event: e
+        });
+        
+        // Error codes explanation
+        if (audioElement.error?.code === 1) {
+          console.error("MEDIA_ERR_ABORTED: Загрузка прервана пользователем");
+        } else if (audioElement.error?.code === 2) {
+          console.error("MEDIA_ERR_NETWORK: Файл не найден или проблема сети");
+        } else if (audioElement.error?.code === 3) {
+          console.error("MEDIA_ERR_DECODE: Ошибка декодирования файла");
+        } else if (audioElement.error?.code === 4) {
+          console.error("MEDIA_ERR_SRC_NOT_SUPPORTED: Формат не поддерживается или файл недоступен");
+        }
+        
         setAudioError(true);
         setAudioLoaded(false);
       };
@@ -80,14 +120,21 @@ export function RelaxationModal({ isOpen, onClose }: RelaxationModalProps) {
 
       audio.addEventListener("loadedmetadata", handleLoadedMetadata);
       audio.addEventListener("canplay", handleCanPlay);
-      audio.addEventListener("error", handleError as any);
+      audio.addEventListener("error", handleError);
       audio.addEventListener("timeupdate", handleTimeUpdate);
       audio.addEventListener("ended", handleEnded);
+      
+      // Set source AFTER adding event listeners
+      console.log("🎵 Setting audio source:", audioFiles[activeTab]);
+      audio.src = audioFiles[activeTab];
+      audio.load();
+      
+      audioRef.current = audio;
 
       return () => {
         audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
         audio.removeEventListener("canplay", handleCanPlay);
-        audio.removeEventListener("error", handleError as any);
+        audio.removeEventListener("error", handleError);
         audio.removeEventListener("timeupdate", handleTimeUpdate);
         audio.removeEventListener("ended", handleEnded);
         audio.pause();
@@ -95,6 +142,7 @@ export function RelaxationModal({ isOpen, onClose }: RelaxationModalProps) {
       };
     } else {
       // For whitenoise without audio file
+      console.log("⚠️ No audio file for:", activeTab);
       setAudioLoaded(false);
       setDuration(300);
     }
