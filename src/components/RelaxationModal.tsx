@@ -36,71 +36,27 @@ export function RelaxationModal({ isOpen, onClose }: RelaxationModalProps) {
   // Initialize audio element
   useEffect(() => {
     if (audioFiles[activeTab]) {
-      console.log("🔄 Loading audio:", audioFiles[activeTab]);
       setAudioLoaded(false);
       setAudioError(false);
-      
-      // First, check if file exists
-      fetch(audioFiles[activeTab], { method: 'HEAD' })
-        .then(response => {
-          console.log("📡 File check response:", {
-            status: response.status,
-            ok: response.ok,
-            contentType: response.headers.get('content-type'),
-            url: response.url
-          });
-          
-          if (!response.ok) {
-            console.error("❌ File not found (404) or server error:", response.status);
-            setAudioError(true);
-            return;
-          }
-        })
-        .catch(err => {
-          console.error("❌ Network error checking file:", err);
-        });
       
       const audio = new Audio();
       audio.crossOrigin = "anonymous";
       audio.loop = isRepeat;
       audio.preload = "metadata";
       
-      // Handle metadata loaded (get duration)
+      // Handle metadata loaded
       const handleLoadedMetadata = () => {
-        console.log("✅ Audio metadata loaded. Duration:", audio.duration);
         setDuration(Math.floor(audio.duration));
         setAudioLoaded(true);
       };
 
       // Handle audio can play
       const handleCanPlay = () => {
-        console.log("✅ Audio can play");
         setAudioLoaded(true);
       };
 
       // Handle audio load error
-      const handleError = (e: Event) => {
-        const audioElement = e.target as HTMLAudioElement;
-        console.error("❌ Audio element error event:", {
-          errorCode: audioElement.error?.code,
-          errorMessage: audioElement.error?.message,
-          src: audioElement.src,
-          networkState: audioElement.networkState,
-          readyState: audioElement.readyState,
-          event: e
-        });
-        
-        // Error codes explanation
-        if (audioElement.error?.code === 1) {
-          console.error("MEDIA_ERR_ABORTED: Загрузка прервана пользователем");
-        } else if (audioElement.error?.code === 2) {
-          console.error("MEDIA_ERR_NETWORK: Файл не найден или проблема сети");
-        } else if (audioElement.error?.code === 3) {
-          console.error("MEDIA_ERR_DECODE: Ошибка декодирования файла");
-        } else if (audioElement.error?.code === 4) {
-          console.error("MEDIA_ERR_SRC_NOT_SUPPORTED: Формат не поддерживается или файл недоступен");
-        }
-        
+      const handleError = () => {
         setAudioError(true);
         setAudioLoaded(false);
       };
@@ -124,8 +80,6 @@ export function RelaxationModal({ isOpen, onClose }: RelaxationModalProps) {
       audio.addEventListener("timeupdate", handleTimeUpdate);
       audio.addEventListener("ended", handleEnded);
       
-      // Set source AFTER adding event listeners
-      console.log("🎵 Setting audio source:", audioFiles[activeTab]);
       audio.src = audioFiles[activeTab];
       audio.load();
       
@@ -142,7 +96,6 @@ export function RelaxationModal({ isOpen, onClose }: RelaxationModalProps) {
       };
     } else {
       // For whitenoise without audio file
-      console.log("⚠️ No audio file for:", activeTab);
       setAudioLoaded(false);
       setDuration(300);
     }
@@ -258,10 +211,11 @@ export function RelaxationModal({ isOpen, onClose }: RelaxationModalProps) {
       />
 
       <div className="relative w-full max-w-3xl">
-        {/* Close button - outside modal on mobile, inside on desktop */}
+        {/* Close button - with safe area for mobile */}
         <button
           onClick={onClose}
-          className="absolute -top-14 right-0 md:top-4 md:right-4 z-10 w-10 h-10 bg-black/60 hover:bg-black/80 backdrop-blur-xl rounded-full flex items-center justify-center transition-colors border border-white/20"
+          className="absolute -top-12 right-4 md:top-4 md:right-4 z-10 w-10 h-10 bg-black/60 hover:bg-black/80 backdrop-blur-xl rounded-full flex items-center justify-center transition-colors border border-white/20"
+          style={{ top: 'max(-3rem, env(safe-area-inset-top, -3rem))' }}
         >
           <X className="w-5 h-5 text-white/90" />
         </button>
@@ -455,6 +409,20 @@ export function RelaxationModal({ isOpen, onClose }: RelaxationModalProps) {
                 <span className="text-white/90 text-xs md:text-sm">{formatTime(currentTime)}</span>
                 <span className="text-white/50 text-xs md:text-sm">{formatTime(duration)}</span>
               </div>
+
+              {/* Error message if audio files not found */}
+              {audioError && (
+                <div className="w-full px-2 md:px-4 mb-3 md:mb-4">
+                  <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-3 text-center">
+                    <p className="text-white/90 text-xs md:text-sm mb-1">
+                      Аудиофайл не найден
+                    </p>
+                    <p className="text-white/60 text-xs">
+                      Загрузите MP3 файлы в GitHub
+                    </p>
+                  </div>
+                </div>
+              )}
 
               {/* Controls */}
               <div className="flex items-center justify-center gap-2 md:gap-4">
