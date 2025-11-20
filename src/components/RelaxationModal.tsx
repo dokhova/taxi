@@ -18,8 +18,8 @@ export function RelaxationModal({ isOpen, onClose }: RelaxationModalProps) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const audioFiles = {
-    meditation: "", // Add your audio file URL here: "https://your-audio-hosting.com/pause_ru.mp3"
-    breathing: "", // Add your audio file URL here: "https://your-audio-hosting.com/4444.mp3"
+    meditation: "/mp3/pause_ru.mp3",
+    breathing: "/mp3/4444.mp3",
     whitenoise: "", // No audio file yet
   };
 
