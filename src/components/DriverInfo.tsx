@@ -19,8 +19,8 @@ export function DriverInfo({
   carColor,
 }: DriverInfoProps) {
   return (
-    <div className="bg-white/5 rounded-2xl shadow-sm border border-white/10 p-4 backdrop-blur-sm">
-      <div className="flex items-start gap-3">
+    <div className="bg-white/5 rounded-2xl border border-white/10 p-4 backdrop-blur-sm">
+      <div className="flex items-center gap-4">
         {/* Driver photo */}
         <div className="relative flex-shrink-0">
           <ImageWithFallback
@@ -31,27 +31,39 @@ export function DriverInfo({
           <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full border-2 border-[#19191B]" style={{ backgroundColor: '#34AB53' }}></div>
         </div>
 
-        {/* Driver details */}
+        {/* Driver info - centered */}
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2">
-            <h3 className="text-lg text-white truncate">{name}</h3>
-            <div className="flex items-center gap-1 bg-yellow-500/20 px-2 py-0.5 rounded-full border border-yellow-500/30 flex-shrink-0">
-              <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" />
+          {/* Name and rating */}
+          <div className="flex items-center gap-2 mb-1">
+            <h3 className="text-white truncate">{name}</h3>
+            <div className="flex items-center gap-1 bg-yellow-500/20 px-2 py-0.5 rounded-full flex-shrink-0">
+              <Star className="w-3.5 h-3.5 text-yellow-500 fill-yellow-500" />
               <span className="text-sm text-yellow-500">{rating}</span>
             </div>
           </div>
-          <p className="text-sm text-white/60 mt-0.5">
+          
+          {/* Car model */}
+          <p className="text-sm text-white/70">
             {carColor} {carModel}
           </p>
-          <p className="text-xs text-white/40 mt-0.5">{carNumber}</p>
+          
+          {/* License plate */}
+          <p className="text-xs text-white/50 mt-0.5">{carNumber}</p>
         </div>
 
-        {/* Action buttons */}
+        {/* Action buttons - right side */}
         <div className="flex gap-2 flex-shrink-0">
-          <button className="w-11 h-11 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors border border-white/10">
+          <button 
+            className="w-12 h-12 bg-white/10 hover:bg-white/15 rounded-full flex items-center justify-center transition-colors"
+            aria-label="Отправить сообщение"
+          >
             <MessageCircle className="w-5 h-5 text-white" />
           </button>
-          <button className="w-11 h-11 rounded-full flex items-center justify-center transition-colors border border-[#34AB53]/30" style={{ backgroundColor: '#34AB53' }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#2d924a'} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#34AB53'}>
+          <button 
+            className="w-12 h-12 rounded-full flex items-center justify-center transition-all hover:brightness-110"
+            style={{ backgroundColor: '#34AB53' }}
+            aria-label="Позвонить"
+          >
             <Phone className="w-5 h-5 text-white" />
           </button>
         </div>

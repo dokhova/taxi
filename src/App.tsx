@@ -2,7 +2,7 @@ import { DriverInfo } from "./components/DriverInfo";
 import { TripMap } from "./components/TripMap";
 import { TripDetails } from "./components/TripDetails";
 import { RelaxationModal } from "./components/RelaxationModal";
-import { MoreVertical, Shield } from "lucide-react";
+import { MoreVertical, Shield, ChevronRight } from "lucide-react";
 import { useState } from "react";
 
 export default function App() {
@@ -40,6 +40,22 @@ export default function App() {
       <div className="max-w-2xl mx-auto p-4 space-y-4 relative z-10">
         {/* Map */}
         <TripMap onRelaxationClick={() => setIsRelaxationModalOpen(true)} />
+
+        {/* Relaxation button */}
+        <button 
+          onClick={() => setIsRelaxationModalOpen(true)}
+          className="w-full bg-white/5 hover:bg-white/10 border border-white/10 backdrop-blur-sm rounded-2xl p-4 flex items-center justify-between transition-all active:scale-[0.98]"
+        >
+          <div className="text-left">
+            <h3 className="text-base text-white mb-0.5">
+              Спокойный режим
+            </h3>
+            <p className="text-xs text-white/60">
+              Пауза в движении
+            </p>
+          </div>
+          <ChevronRight className="w-5 h-5 text-white/50 flex-shrink-0" />
+        </button>
 
         {/* Driver info */}
         <DriverInfo

@@ -33,7 +33,7 @@ export function TripDetails({
       <div className="space-y-3 mb-4">
         <div className="flex gap-3">
           <div className="flex flex-col items-center mt-1">
-            <Circle className="w-3 h-3" style={{ color: '#4285F4', fill: '#4285F4' }} />
+            <div className="w-3 h-3 rounded-full border-2" style={{ borderColor: '#4285F4' }}></div>
             <div className="w-0.5 h-8 bg-white/20 my-1"></div>
           </div>
           <div className="flex-1">

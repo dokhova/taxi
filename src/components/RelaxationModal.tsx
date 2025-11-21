@@ -261,16 +261,113 @@ export function RelaxationModal({
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.9 }}
           className="relative w-full bg-[#19191B] rounded-2xl shadow-2xl overflow-hidden border border-white/10"
-          style={{ height: '90vh', maxHeight: '600px', minHeight: '450px' }}
+          style={{ maxHeight: '85vh' }}
         >
-          <div className="flex flex-col h-full">
-            {/* Top - Horizontal slider for practices */}
-            <div className="flex-shrink-0 border-b border-white/10">
-              <div className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide px-4 py-4 gap-3">
+          <div className="flex flex-col md:flex-row">
+            {/* Left - Vertical list for practices (desktop) / Top horizontal slider (mobile) */}
+            <div className="flex-shrink-0 md:border-r border-b md:border-b-0 border-white/10 md:w-80">
+              {/* Mobile - Horizontal slider */}
+              <div className="md:hidden flex overflow-x-auto snap-x snap-mandatory scrollbar-hide px-3 py-3 gap-2">
                 {/* Meditation */}
                 <motion.button
                   onClick={() => setActiveTab("meditation")}
-                  className={`flex-shrink-0 w-64 flex items-center gap-4 px-4 py-3 rounded-xl text-left transition-all snap-center ${
+                  className={`flex-shrink-0 w-56 flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all snap-center ${
+                    activeTab === "meditation"
+                      ? "bg-white/10 border border-white/20"
+                      : "bg-white/5 hover:bg-white/10 border border-transparent"
+                  }`}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  {/* Icon */}
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
+                    activeTab === "meditation" ? "bg-green-500/20 border border-green-500/30" : "bg-white/10"
+                  }`}>
+                    <div className="w-4 h-4 grid grid-cols-3 gap-0.5">
+                      {[...Array(9)].map((_, i) => (
+                        <div
+                          key={i}
+                          className={activeTab === "meditation" ? "bg-green-500 rounded-full" : "bg-white/50 rounded-full"}
+                        />
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="flex-1">
+                    <h3 className="text-white">Тишина в пути</h3>
+                    <p className="text-white/50 text-sm">Медитация</p>
+                  </div>
+                </motion.button>
+
+                {/* Ambient */}
+                <motion.button
+                  onClick={() => setActiveTab("ambient")}
+                  className={`flex-shrink-0 w-56 flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all snap-center ${
+                    activeTab === "ambient"
+                      ? "bg-white/10 border border-white/20"
+                      : "bg-white/5 hover:bg-white/10 border border-transparent"
+                  }`}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  {/* Icon */}
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
+                    activeTab === "ambient" ? "bg-blue-500/20 border border-blue-500/30" : "bg-white/10"
+                  }`}>
+                    <div className="relative w-4 h-4">
+                      <div className={`absolute inset-0 rounded-full border-2 ${
+                        activeTab === "ambient" ? "border-blue-500" : "border-white/50"
+                      }`} />
+                      <div className={`absolute inset-1 rounded-full border ${
+                        activeTab === "ambient" ? "border-blue-400" : "border-white/30"
+                      }`} />
+                    </div>
+                  </div>
+
+                  <div className="flex-1">
+                    <h3 className="text-white">Мягкий фон</h3>
+                    <p className="text-white/50 text-sm">Амбиент</p>
+                  </div>
+                </motion.button>
+
+                {/* Nature */}
+                <motion.button
+                  onClick={() => setActiveTab("nature")}
+                  className={`flex-shrink-0 w-56 flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all snap-center ${
+                    activeTab === "nature"
+                      ? "bg-white/10 border border-white/20"
+                      : "bg-white/5 hover:bg-white/10 border border-transparent"
+                  }`}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  {/* Icon */}
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
+                    activeTab === "nature" ? "bg-emerald-500/20 border border-emerald-500/30" : "bg-white/10"
+                  }`}>
+                    <div className="relative w-4 h-4">
+                      <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full ${
+                        activeTab === "nature" ? "bg-emerald-500" : "bg-white/50"
+                      }`} />
+                      <div className={`absolute bottom-0 left-0 w-1.5 h-1.5 rounded-full ${
+                        activeTab === "nature" ? "bg-emerald-500" : "bg-white/50"
+                      }`} />
+                      <div className={`absolute bottom-0 right-0 w-1.5 h-1.5 rounded-full ${
+                        activeTab === "nature" ? "bg-emerald-500" : "bg-white/50"
+                      }`} />
+                    </div>
+                  </div>
+
+                  <div className="flex-1">
+                    <h3 className="text-white">Звук природы</h3>
+                    <p className="text-white/50 text-sm">Мелодия</p>
+                  </div>
+                </motion.button>
+              </div>
+
+              {/* Desktop - Vertical list */}
+              <div className="hidden md:flex md:flex-col p-3 gap-2">
+                {/* Meditation */}
+                <motion.button
+                  onClick={() => setActiveTab("meditation")}
+                  className={`flex items-center gap-3 px-3 py-3 rounded-xl text-left transition-all ${
                     activeTab === "meditation"
                       ? "bg-white/10 border border-white/20"
                       : "bg-white/5 hover:bg-white/10 border border-transparent"
@@ -295,12 +392,16 @@ export function RelaxationModal({
                     <h3 className="text-white">Тишина в пути</h3>
                     <p className="text-white/50 text-sm">Медитация</p>
                   </div>
+
+                  {activeTab === "meditation" && (
+                    <ChevronRight className="w-5 h-5 text-white/50 flex-shrink-0" />
+                  )}
                 </motion.button>
 
                 {/* Ambient */}
                 <motion.button
                   onClick={() => setActiveTab("ambient")}
-                  className={`flex-shrink-0 w-64 flex items-center gap-4 px-4 py-3 rounded-xl text-left transition-all snap-center ${
+                  className={`flex items-center gap-3 px-3 py-3 rounded-xl text-left transition-all ${
                     activeTab === "ambient"
                       ? "bg-white/10 border border-white/20"
                       : "bg-white/5 hover:bg-white/10 border border-transparent"
@@ -325,12 +426,16 @@ export function RelaxationModal({
                     <h3 className="text-white">Мягкий фон</h3>
                     <p className="text-white/50 text-sm">Амбиент</p>
                   </div>
+
+                  {activeTab === "ambient" && (
+                    <ChevronRight className="w-5 h-5 text-white/50 flex-shrink-0" />
+                  )}
                 </motion.button>
 
                 {/* Nature */}
                 <motion.button
                   onClick={() => setActiveTab("nature")}
-                  className={`flex-shrink-0 w-64 flex items-center gap-4 px-4 py-3 rounded-xl text-left transition-all snap-center ${
+                  className={`flex items-center gap-3 px-3 py-3 rounded-xl text-left transition-all ${
                     activeTab === "nature"
                       ? "bg-white/10 border border-white/20"
                       : "bg-white/5 hover:bg-white/10 border border-transparent"
@@ -342,13 +447,13 @@ export function RelaxationModal({
                     activeTab === "nature" ? "bg-emerald-500/20 border border-emerald-500/30" : "bg-white/10"
                   }`}>
                     <div className="relative w-5 h-5">
-                      <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full ${
+                      <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-2.5 h-2.5 rounded-full ${
                         activeTab === "nature" ? "bg-emerald-500" : "bg-white/50"
                       }`} />
-                      <div className={`absolute bottom-0 left-0 w-1.5 h-1.5 rounded-full ${
+                      <div className={`absolute bottom-0 left-0 w-2 h-2 rounded-full ${
                         activeTab === "nature" ? "bg-emerald-500" : "bg-white/50"
                       }`} />
-                      <div className={`absolute bottom-0 right-0 w-1.5 h-1.5 rounded-full ${
+                      <div className={`absolute bottom-0 right-0 w-2 h-2 rounded-full ${
                         activeTab === "nature" ? "bg-emerald-500" : "bg-white/50"
                       }`} />
                     </div>
@@ -358,15 +463,19 @@ export function RelaxationModal({
                     <h3 className="text-white">Звук природы</h3>
                     <p className="text-white/50 text-sm">Мелодия</p>
                   </div>
+
+                  {activeTab === "nature" && (
+                    <ChevronRight className="w-5 h-5 text-white/50 flex-shrink-0" />
+                  )}
                 </motion.button>
               </div>
             </div>
 
-            {/* Bottom - Player */}
-            <div className="flex-1 relative px-4 md:px-6 pt-4 pb-4 flex flex-col overflow-y-auto">
+            {/* Right - Player */}
+            <div className="relative px-3 md:px-5 pt-4 pb-3 flex flex-col flex-1 justify-center">
               {/* Title */}
               <div className="text-center mb-4">
-                <h2 className="text-white text-xl mb-1">
+                <h2 className="text-white text-lg mb-0.5">
                   {activeTab === "meditation"
                     ? "Тишина в пути"
                     : activeTab === "ambient"
@@ -382,11 +491,8 @@ export function RelaxationModal({
                 </p>
               </div>
 
-              {/* Spacer to push content down slightly */}
-              <div className="flex-1 min-h-0" />
-
               {/* Circular player */}
-              <div className="relative w-40 h-40 md:w-48 md:h-48 flex items-center justify-center mx-auto mb-4 flex-shrink-0">
+              <div className="relative w-36 h-36 md:w-44 md:h-44 flex items-center justify-center mx-auto mb-4 flex-shrink-0">
                 {/* Single circle - always visible */}
                 <svg className="absolute inset-0 w-full h-full transform -rotate-90" viewBox="0 0 224 224">
                   {/* Background circle */}
@@ -460,7 +566,7 @@ export function RelaxationModal({
               </div>
 
               {/* Time */}
-              <div className="flex items-center justify-center gap-8 mb-3">
+              <div className="flex items-center justify-center gap-6 mb-2 text-sm">
                 <span className="text-white/70">
                   {formatTime(currentTime)}
                 </span>
@@ -470,7 +576,7 @@ export function RelaxationModal({
               </div>
 
               {/* Controls */}
-              <div className="flex items-center justify-center gap-6 mb-2">
+              <div className="flex items-center justify-center gap-6">
                 <button
                   onClick={() => setIsRepeat(!isRepeat)}
                   className={`w-10 h-10 flex items-center justify-center hover:bg-white/10 rounded-full transition-colors ${
@@ -503,9 +609,6 @@ export function RelaxationModal({
                   <Shuffle className="w-5 h-5 text-white" />
                 </button>
               </div>
-
-              {/* Bottom spacer */}
-              <div className="flex-1 min-h-0" />
             </div>
           </div>
         </motion.div>

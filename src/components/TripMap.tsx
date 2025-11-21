@@ -1,5 +1,4 @@
 import { MapPin, Navigation } from "lucide-react";
-import { DriverRecruitmentBanner } from "./DriverRecruitmentBanner";
 
 interface TripMapProps {
   onRelaxationClick: () => void;
@@ -50,11 +49,6 @@ export function TripMap({ onRelaxationClick }: TripMapProps) {
       {/* Distance badge */}
       <div className="absolute top-4 right-4 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg border border-white/20">
         <span className="text-sm text-white">3.2 км</span>
-      </div>
-
-      {/* Driver recruitment banner */}
-      <div className="absolute bottom-4 left-0">
-        <DriverRecruitmentBanner onClick={onRelaxationClick} />
       </div>
     </div>
   );
