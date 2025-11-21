@@ -44,7 +44,7 @@ export default function App() {
         {/* Relaxation button */}
         <button 
           onClick={() => setIsRelaxationModalOpen(true)}
-          className="w-full bg-white/5 hover:bg-white/10 border border-white/10 backdrop-blur-sm rounded-2xl p-4 flex items-center justify-between transition-all active:scale-[0.98]"
+          className="bg-white/5 hover:bg-white/10 border border-white/10 backdrop-blur-sm rounded-2xl p-4 inline-flex items-center gap-3 transition-all active:scale-[0.98]"
         >
           <div className="text-left">
             <h3 className="text-base text-white mb-0.5">

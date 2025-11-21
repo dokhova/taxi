@@ -21,7 +21,6 @@ export function TripMap({ onRelaxationClick }: TripMapProps) {
 
       {/* Start point */}
       <div className="absolute left-16 bottom-16 flex items-center gap-2">
-        <div className="w-3 h-3 rounded-full ring-4" style={{ backgroundColor: '#4285F4', boxShadow: '0 0 0 4px rgba(66, 133, 244, 0.2)' }}></div>
       </div>
 
       {/* End point */}
@@ -35,8 +34,6 @@ export function TripMap({ onRelaxationClick }: TripMapProps) {
           <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg ring-4 ring-white/20">
             <Navigation className="w-6 h-6 text-[#19191B] transform rotate-45 -translate-x-0.5" />
           </div>
-          {/* Pulsing circle */}
-          <div className="absolute inset-0 w-12 h-12 bg-white rounded-full animate-ping opacity-20"></div>
         </div>
       </div>
 
