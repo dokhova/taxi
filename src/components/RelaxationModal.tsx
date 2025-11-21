@@ -1,4 +1,14 @@
-import { X, Repeat, SkipBack, SkipForward, Shuffle, Play, Pause, ChevronRight } from "lucide-react";
+import {
+  X,
+  Repeat,
+  SkipBack,
+  SkipForward,
+  Shuffle,
+  Play,
+  Pause,
+  ChevronRight,
+  ChevronDown,
+} from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { motion } from "motion/react";
 
@@ -9,7 +19,10 @@ interface RelaxationModalProps {
 
 type Tab = "meditation" | "ambient" | "nature";
 
-export function RelaxationModal({ isOpen, onClose }: RelaxationModalProps) {
+export function RelaxationModal({
+  isOpen,
+  onClose,
+}: RelaxationModalProps) {
   const [activeTab, setActiveTab] = useState<Tab>("meditation");
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -30,7 +43,7 @@ export function RelaxationModal({ isOpen, onClose }: RelaxationModalProps) {
     ambient: 0, // Will be set from audio metadata
     nature: 0, // Will be set from audio metadata
   };
-  
+
   const [duration, setDuration] = useState(180);
 
   // Initialize audio element
@@ -38,12 +51,12 @@ export function RelaxationModal({ isOpen, onClose }: RelaxationModalProps) {
     if (audioFiles[activeTab]) {
       setAudioLoaded(false);
       setAudioError(false);
-      
+
       const audio = new Audio();
       audio.crossOrigin = "anonymous";
       audio.loop = isRepeat;
       audio.preload = "metadata";
-      
+
       // Handle metadata loaded
       const handleLoadedMetadata = () => {
         setDuration(Math.floor(audio.duration));
@@ -74,22 +87,31 @@ export function RelaxationModal({ isOpen, onClose }: RelaxationModalProps) {
         }
       };
 
-      audio.addEventListener("loadedmetadata", handleLoadedMetadata);
+      audio.addEventListener(
+        "loadedmetadata",
+        handleLoadedMetadata,
+      );
       audio.addEventListener("canplay", handleCanPlay);
       audio.addEventListener("error", handleError);
       audio.addEventListener("timeupdate", handleTimeUpdate);
       audio.addEventListener("ended", handleEnded);
-      
+
       audio.src = audioFiles[activeTab];
       audio.load();
-      
+
       audioRef.current = audio;
 
       return () => {
-        audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
+        audio.removeEventListener(
+          "loadedmetadata",
+          handleLoadedMetadata,
+        );
         audio.removeEventListener("canplay", handleCanPlay);
         audio.removeEventListener("error", handleError);
-        audio.removeEventListener("timeupdate", handleTimeUpdate);
+        audio.removeEventListener(
+          "timeupdate",
+          handleTimeUpdate,
+        );
         audio.removeEventListener("ended", handleEnded);
         audio.pause();
         audio.src = "";
@@ -106,7 +128,7 @@ export function RelaxationModal({ isOpen, onClose }: RelaxationModalProps) {
     if (audioRef.current && audioLoaded) {
       if (isPlaying) {
         console.log("Playing audio");
-        audioRef.current.play().catch(err => {
+        audioRef.current.play().catch((err) => {
           console.error("Audio play error:", err);
           setAudioError(true);
           setIsPlaying(false);
@@ -119,7 +141,11 @@ export function RelaxationModal({ isOpen, onClose }: RelaxationModalProps) {
 
   // Fallback timer for tracks without audio files or if audio fails
   useEffect(() => {
-    if (isOpen && isPlaying && (!audioFiles[activeTab] || audioError)) {
+    if (
+      isOpen &&
+      isPlaying &&
+      (!audioFiles[activeTab] || audioError)
+    ) {
       console.log("Using fallback timer");
       const interval = setInterval(() => {
         setCurrentTime((prev) => {
@@ -136,7 +162,14 @@ export function RelaxationModal({ isOpen, onClose }: RelaxationModalProps) {
       }, 1000);
       return () => clearInterval(interval);
     }
-  }, [isOpen, isPlaying, duration, isRepeat, activeTab, audioError]);
+  }, [
+    isOpen,
+    isPlaying,
+    duration,
+    isRepeat,
+    activeTab,
+    audioError,
+  ]);
 
   useEffect(() => {
     // Reset time and stop playing when switching tabs
@@ -156,13 +189,14 @@ export function RelaxationModal({ isOpen, onClose }: RelaxationModalProps) {
 
   const progress = (currentTime / duration) * 100;
   const circumference = 2 * Math.PI * 70;
-  const strokeDashoffset = circumference - (progress / 100) * circumference;
+  const strokeDashoffset =
+    circumference - (progress / 100) * circumference;
 
   if (!isOpen) return null;
 
   const handleSkipBack = () => {
     if (currentTime > 10) {
-      setCurrentTime(prev => prev - 10);
+      setCurrentTime((prev) => prev - 10);
     } else {
       setCurrentTime(0);
     }
@@ -170,7 +204,7 @@ export function RelaxationModal({ isOpen, onClose }: RelaxationModalProps) {
 
   const handleSkipForward = () => {
     if (currentTime + 10 < duration) {
-      setCurrentTime(prev => prev + 10);
+      setCurrentTime((prev) => prev + 10);
     } else {
       setCurrentTime(duration);
     }
@@ -179,7 +213,8 @@ export function RelaxationModal({ isOpen, onClose }: RelaxationModalProps) {
   const handlePrevious = () => {
     const tabs: Tab[] = ["meditation", "ambient", "nature"];
     const currentIndex = tabs.indexOf(activeTab);
-    const prevIndex = currentIndex === 0 ? tabs.length - 1 : currentIndex - 1;
+    const prevIndex =
+      currentIndex === 0 ? tabs.length - 1 : currentIndex - 1;
     setActiveTab(tabs[prevIndex]);
   };
 
@@ -194,8 +229,9 @@ export function RelaxationModal({ isOpen, onClose }: RelaxationModalProps) {
     if (!isShuffle) {
       setIsShuffle(true);
       const tabs: Tab[] = ["meditation", "ambient", "nature"];
-      const otherTabs = tabs.filter(t => t !== activeTab);
-      const randomTab = otherTabs[Math.floor(Math.random() * otherTabs.length)];
+      const otherTabs = tabs.filter((t) => t !== activeTab);
+      const randomTab =
+        otherTabs[Math.floor(Math.random() * otherTabs.length)];
       setActiveTab(randomTab);
     } else {
       setIsShuffle(false);
@@ -206,20 +242,17 @@ export function RelaxationModal({ isOpen, onClose }: RelaxationModalProps) {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/70"
         onClick={onClose}
       />
 
-      <div className="relative w-full max-w-3xl">
-        {/* Close button - positioned outside modal on mobile, inside on desktop */}
+      <div className="relative w-full max-w-2xl">
+        {/* Minimize button */}
         <button
           onClick={onClose}
-          className="absolute right-0 z-10 w-10 h-10 bg-black/60 hover:bg-black/80 backdrop-blur-xl rounded-full flex items-center justify-center transition-colors border border-white/20 md:top-4 md:right-4"
-          style={{ 
-            top: 'calc(env(safe-area-inset-top, 0px) + 0.5rem)',
-          }}
+          className="absolute -top-16 right-0 md:-top-16 md:right-0 z-10 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors shadow-lg"
         >
-          <X className="w-5 h-5 text-white/90" />
+          <ChevronDown className="w-6 h-6 text-white" />
         </button>
 
         {/* Modal */}
@@ -227,227 +260,252 @@ export function RelaxationModal({ isOpen, onClose }: RelaxationModalProps) {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.9 }}
-          className="relative w-full bg-black/40 backdrop-blur-2xl rounded-xl shadow-2xl overflow-hidden p-4 md:p-6 border border-white/10 max-h-[90vh] overflow-y-auto mt-14 md:mt-0"
+          className="relative w-full bg-[#19191B] rounded-2xl shadow-2xl overflow-hidden border border-white/10"
+          style={{ height: '90vh', maxHeight: '600px', minHeight: '450px' }}
         >
-          <div className="flex flex-col md:flex-row gap-4 md:gap-6">
-            {/* Left side - Sessions list */}
-            <div className="flex-1 space-y-2 md:max-w-md">
-              {/* Meditation */}
-              <motion.button
-                onClick={() => setActiveTab("meditation")}
-                className={`w-full rounded-2xl p-4 text-left transition-all flex items-center gap-4 ${
-                  activeTab === "meditation"
-                    ? "bg-white/10"
-                    : "bg-transparent hover:bg-white/5"
-                }`}
-                whileHover={{ scale: 1.01 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                {/* Icon */}
-                <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center flex-shrink-0">
-                  <div className="w-6 h-6 grid grid-cols-3 gap-0.5">
-                    {[...Array(9)].map((_, i) => (
-                      <div key={i} className="bg-white/70 rounded-full" />
-                    ))}
+          <div className="flex flex-col h-full">
+            {/* Top - Horizontal slider for practices */}
+            <div className="flex-shrink-0 border-b border-white/10">
+              <div className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide px-4 py-4 gap-3">
+                {/* Meditation */}
+                <motion.button
+                  onClick={() => setActiveTab("meditation")}
+                  className={`flex-shrink-0 w-64 flex items-center gap-4 px-4 py-3 rounded-xl text-left transition-all snap-center ${
+                    activeTab === "meditation"
+                      ? "bg-white/10 border border-white/20"
+                      : "bg-white/5 hover:bg-white/10 border border-transparent"
+                  }`}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  {/* Icon */}
+                  <div className={`w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 ${
+                    activeTab === "meditation" ? "bg-green-500/20 border border-green-500/30" : "bg-white/10"
+                  }`}>
+                    <div className="w-5 h-5 grid grid-cols-3 gap-0.5">
+                      {[...Array(9)].map((_, i) => (
+                        <div
+                          key={i}
+                          className={activeTab === "meditation" ? "bg-green-500 rounded-full" : "bg-white/50 rounded-full"}
+                        />
+                      ))}
+                    </div>
                   </div>
-                </div>
-                
-                <div className="flex-1">
-                  <h3 className="text-white">
-                    Тишина в пути
-                  </h3>
-                  <p className="text-white/50 text-sm">
-                    Медитация
-                  </p>
-                </div>
 
-                {/* Play indicator */}
-                {activeTab === "meditation" ? (
-                  <div className="w-8 h-8 flex items-center justify-center">
-                    <div className="w-1 h-4 bg-white/70 rounded-full mr-0.5" />
-                    <div className="w-1 h-4 bg-white/70 rounded-full" />
+                  <div className="flex-1">
+                    <h3 className="text-white">Тишина в пути</h3>
+                    <p className="text-white/50 text-sm">Медитация</p>
                   </div>
-                ) : (
-                  <ChevronRight className="w-5 h-5 text-white/40" />
-                )}
-              </motion.button>
+                </motion.button>
 
-              {/* Ambient */}
-              <motion.button
-                onClick={() => setActiveTab("ambient")}
-                className={`w-full rounded-2xl p-4 text-left transition-all flex items-center gap-4 ${
-                  activeTab === "ambient"
-                    ? "bg-white/10"
-                    : "bg-transparent hover:bg-white/5"
-                }`}
-                whileHover={{ scale: 1.01 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                {/* Icon */}
-                <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center flex-shrink-0">
-                  <div className="relative w-6 h-6">
-                    <div className="absolute inset-0 rounded-full border-2 border-white/70" />
-                    <div className="absolute inset-1 rounded-full border-2 border-white/50" />
-                    <div className="absolute inset-2 rounded-full border-2 border-white/30" />
+                {/* Ambient */}
+                <motion.button
+                  onClick={() => setActiveTab("ambient")}
+                  className={`flex-shrink-0 w-64 flex items-center gap-4 px-4 py-3 rounded-xl text-left transition-all snap-center ${
+                    activeTab === "ambient"
+                      ? "bg-white/10 border border-white/20"
+                      : "bg-white/5 hover:bg-white/10 border border-transparent"
+                  }`}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  {/* Icon */}
+                  <div className={`w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 ${
+                    activeTab === "ambient" ? "bg-blue-500/20 border border-blue-500/30" : "bg-white/10"
+                  }`}>
+                    <div className="relative w-5 h-5">
+                      <div className={`absolute inset-0 rounded-full border-2 ${
+                        activeTab === "ambient" ? "border-blue-500" : "border-white/50"
+                      }`} />
+                      <div className={`absolute inset-1 rounded-full border ${
+                        activeTab === "ambient" ? "border-blue-400" : "border-white/30"
+                      }`} />
+                    </div>
                   </div>
-                </div>
-                
-                <div className="flex-1">
-                  <h3 className="text-white">
-                    Мягкий фон
-                  </h3>
-                  <p className="text-white/50 text-sm">
-                    Амбиент
-                  </p>
-                </div>
 
-                {/* Play indicator */}
-                {activeTab === "ambient" ? (
-                  <div className="w-8 h-8 flex items-center justify-center">
-                    <div className="w-1 h-4 bg-white/70 rounded-full mr-0.5" />
-                    <div className="w-1 h-4 bg-white/70 rounded-full" />
+                  <div className="flex-1">
+                    <h3 className="text-white">Мягкий фон</h3>
+                    <p className="text-white/50 text-sm">Амбиент</p>
                   </div>
-                ) : (
-                  <ChevronRight className="w-5 h-5 text-white/40" />
-                )}
-              </motion.button>
+                </motion.button>
 
-              {/* Nature */}
-              <motion.button
-                onClick={() => setActiveTab("nature")}
-                className={`w-full rounded-2xl p-4 text-left transition-all flex items-center gap-4 ${
-                  activeTab === "nature"
-                    ? "bg-white/10"
-                    : "bg-transparent hover:bg-white/5"
-                }`}
-                whileHover={{ scale: 1.01 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                {/* Icon */}
-                <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center flex-shrink-0">
-                  <div className="relative w-6 h-6">
-                    <div className="absolute inset-0 rounded-full border-2 border-white/70" />
-                    <div className="absolute inset-1 rounded-full border-2 border-white/50" />
-                    <div className="absolute inset-2 rounded-full border-2 border-white/30" />
+                {/* Nature */}
+                <motion.button
+                  onClick={() => setActiveTab("nature")}
+                  className={`flex-shrink-0 w-64 flex items-center gap-4 px-4 py-3 rounded-xl text-left transition-all snap-center ${
+                    activeTab === "nature"
+                      ? "bg-white/10 border border-white/20"
+                      : "bg-white/5 hover:bg-white/10 border border-transparent"
+                  }`}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  {/* Icon */}
+                  <div className={`w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 ${
+                    activeTab === "nature" ? "bg-emerald-500/20 border border-emerald-500/30" : "bg-white/10"
+                  }`}>
+                    <div className="relative w-5 h-5">
+                      <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full ${
+                        activeTab === "nature" ? "bg-emerald-500" : "bg-white/50"
+                      }`} />
+                      <div className={`absolute bottom-0 left-0 w-1.5 h-1.5 rounded-full ${
+                        activeTab === "nature" ? "bg-emerald-500" : "bg-white/50"
+                      }`} />
+                      <div className={`absolute bottom-0 right-0 w-1.5 h-1.5 rounded-full ${
+                        activeTab === "nature" ? "bg-emerald-500" : "bg-white/50"
+                      }`} />
+                    </div>
                   </div>
-                </div>
-                
-                <div className="flex-1">
-                  <h3 className="text-white">
-                    Звук природы
-                  </h3>
-                  <p className="text-white/50 text-sm">
-                    Атмосфера
-                  </p>
-                </div>
 
-                {/* Play indicator */}
-                {activeTab === "nature" ? (
-                  <div className="w-8 h-8 flex items-center justify-center">
-                    <div className="w-1 h-4 bg-white/70 rounded-full mr-0.5" />
-                    <div className="w-1 h-4 bg-white/70 rounded-full" />
+                  <div className="flex-1">
+                    <h3 className="text-white">Звук природы</h3>
+                    <p className="text-white/50 text-sm">Мелодия</p>
                   </div>
-                ) : (
-                  <ChevronRight className="w-5 h-5 text-white/40" />
-                )}
-              </motion.button>
+                </motion.button>
+              </div>
             </div>
 
-            {/* Right side - Player */}
-            <div className="w-full md:w-96 bg-white/10 backdrop-blur-xl rounded-xl p-4 md:p-6 flex flex-col items-center border border-white/20 shadow-2xl">
+            {/* Bottom - Player */}
+            <div className="flex-1 relative px-4 md:px-6 pt-4 pb-4 flex flex-col overflow-y-auto">
               {/* Title */}
-              <div className="text-center mb-3 md:mb-4">
-                <p className="text-white/60 text-xs md:text-sm">
-                  {activeTab === "meditation" ? "Тишина в пути" : activeTab === "ambient" ? "Мягкий фон" : "Звук природы"}
+              <div className="text-center mb-4">
+                <h2 className="text-white text-xl mb-1">
+                  {activeTab === "meditation"
+                    ? "Тишина в пути"
+                    : activeTab === "ambient"
+                      ? "Мягкий фон"
+                      : "Звук природы"}
+                </h2>
+                <p className="text-white/50 text-sm">
+                  {activeTab === "meditation"
+                    ? "Медитация"
+                    : activeTab === "ambient"
+                      ? "Амбиент"
+                      : "Мелодия"}
                 </p>
-                <h3 className="text-white text-sm md:text-base">
-                  {activeTab === "meditation" ? "Медитация" : activeTab === "ambient" ? "Амбиент" : "Атмосфера"}
-                </h3>
               </div>
 
-              {/* Circular progress */}
-              <div className="relative w-32 h-32 md:w-40 md:h-40 flex items-center justify-center mb-3 md:mb-4">
-                <svg className="w-full h-full transform -rotate-90">
+              {/* Spacer to push content down slightly */}
+              <div className="flex-1 min-h-0" />
+
+              {/* Circular player */}
+              <div className="relative w-40 h-40 md:w-48 md:h-48 flex items-center justify-center mx-auto mb-4 flex-shrink-0">
+                {/* Single circle - always visible */}
+                <svg className="absolute inset-0 w-full h-full transform -rotate-90" viewBox="0 0 224 224">
                   {/* Background circle */}
                   <circle
-                    cx="50%"
-                    cy="50%"
-                    r="45%"
-                    stroke="rgba(255, 255, 255, 0.15)"
-                    strokeWidth="8"
+                    cx="112"
+                    cy="112"
+                    r="100"
+                    stroke="rgba(255, 255, 255, 0.2)"
+                    strokeWidth="2"
                     fill="none"
                   />
-                  {/* Progress circle - only show when playing or has progress */}
+                  {/* Progress circle */}
                   {(isPlaying || currentTime > 0) && (
                     <circle
-                      cx="50%"
-                      cy="50%"
-                      r="45%"
-                      stroke={activeTab === "meditation" ? "#34AB53" : activeTab === "ambient" ? "#E74639" : "#E74639"}
-                      strokeWidth="8"
+                      cx="112"
+                      cy="112"
+                      r="100"
+                      stroke={
+                        activeTab === "meditation"
+                          ? "#34AB53"
+                          : activeTab === "ambient"
+                            ? "#4285F4"
+                            : "#10B981"
+                      }
+                      strokeWidth="2"
                       fill="none"
-                      strokeDasharray={2 * Math.PI * 60}
-                      strokeDashoffset={2 * Math.PI * 60 - (progress / 100) * 2 * Math.PI * 60}
+                      strokeDasharray={2 * Math.PI * 100}
+                      strokeDashoffset={
+                        2 * Math.PI * 100 -
+                        (progress / 100) * 2 * Math.PI * 100
+                      }
                       strokeLinecap="round"
-                      style={{ transition: "stroke-dashoffset 0.5s ease" }}
+                      style={{
+                        transition: "stroke-dashoffset 0.5s ease",
+                      }}
                     />
                   )}
                 </svg>
 
-                {/* Play/Pause button */}
+                {/* Center Play/Pause button */}
                 <button
                   onClick={() => setIsPlaying(!isPlaying)}
-                  className="absolute inset-0 m-auto w-16 h-16 md:w-20 md:h-20 bg-white/20 backdrop-blur-xl rounded-full flex items-center justify-center hover:bg-white/30 transition-all border border-white/30"
-                  style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.4)" }}
+                  className="relative z-10 w-20 h-20 bg-white/10 hover:bg-white/20 border border-white/20 rounded-full flex items-center justify-center transition-all"
                 >
                   {isPlaying ? (
-                    <Pause className="w-6 h-6 md:w-8 md:h-8 text-white" fill="currentColor" />
+                    <Pause 
+                      className="w-8 h-8" 
+                      fill="currentColor"
+                      style={{
+                        color: activeTab === "meditation"
+                          ? "#34AB53"
+                          : activeTab === "ambient"
+                            ? "#4285F4"
+                            : "#10B981"
+                      }}
+                    />
                   ) : (
-                    <Play className="w-6 h-6 md:w-8 md:h-8 text-white translate-x-[1px]" fill="currentColor" />
+                    <Play 
+                      className="w-8 h-8 translate-x-0.5" 
+                      fill="currentColor"
+                      style={{
+                        color: activeTab === "meditation"
+                          ? "#34AB53"
+                          : activeTab === "ambient"
+                            ? "#4285F4"
+                            : "#10B981"
+                      }}
+                    />
                   )}
                 </button>
               </div>
 
               {/* Time */}
-              <div className="flex items-center justify-between w-full px-2 md:px-4 mb-3 md:mb-4">
-                <span className="text-white/90 text-xs md:text-sm">{formatTime(currentTime)}</span>
-                <span className="text-white/50 text-xs md:text-sm">{formatTime(duration)}</span>
+              <div className="flex items-center justify-center gap-8 mb-3">
+                <span className="text-white/70">
+                  {formatTime(currentTime)}
+                </span>
+                <span className="text-white/40">
+                  {formatTime(duration)}
+                </span>
               </div>
-
-              {/* Error message */}
-              {/* Error notification removed - user doesn't need to see it */}
 
               {/* Controls */}
-              <div className="flex items-center justify-center gap-2 md:gap-4">
-                <button 
+              <div className="flex items-center justify-center gap-6 mb-2">
+                <button
                   onClick={() => setIsRepeat(!isRepeat)}
-                  className={`w-8 h-8 md:w-10 md:h-10 flex items-center justify-center hover:bg-white/10 rounded-full transition-colors ${
-                    isRepeat ? 'bg-white/10' : ''
+                  className={`w-10 h-10 flex items-center justify-center hover:bg-white/10 rounded-full transition-colors ${
+                    isRepeat ? "opacity-100" : "opacity-30"
                   }`}
                 >
-                  <Repeat className={`w-4 h-4 md:w-5 md:h-5 ${isRepeat ? 'text-white' : 'text-white/70'}`} />
+                  <Repeat className="w-5 h-5 text-white" />
                 </button>
-                <button 
+                
+                <button
                   onClick={handlePrevious}
-                  className="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center hover:bg-white/10 rounded-full transition-colors"
+                  className="w-10 h-10 flex items-center justify-center hover:bg-white/10 rounded-full transition-colors opacity-50 hover:opacity-100"
                 >
-                  <SkipBack className="w-4 h-4 md:w-5 md:h-5 text-white/70" />
+                  <SkipBack className="w-5 h-5 text-white" />
                 </button>
-                <button 
+                
+                <button
                   onClick={handleNext}
-                  className="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center hover:bg-white/10 rounded-full transition-colors"
+                  className="w-10 h-10 flex items-center justify-center hover:bg-white/10 rounded-full transition-colors opacity-50 hover:opacity-100"
                 >
-                  <SkipForward className="w-4 h-4 md:w-5 md:h-5 text-white/70" />
+                  <SkipForward className="w-5 h-5 text-white" />
                 </button>
-                <button 
+                
+                <button
                   onClick={handleShuffle}
-                  className={`w-8 h-8 md:w-10 md:h-10 flex items-center justify-center hover:bg-white/10 rounded-full transition-colors ${
-                    isShuffle ? 'bg-white/10' : ''
+                  className={`w-10 h-10 flex items-center justify-center hover:bg-white/10 rounded-full transition-colors ${
+                    isShuffle ? "opacity-100" : "opacity-30"
                   }`}
                 >
-                  <Shuffle className={`w-4 h-4 md:w-5 md:h-5 ${isShuffle ? 'text-white' : 'text-white/70'}`} />
+                  <Shuffle className="w-5 h-5 text-white" />
                 </button>
               </div>
+
+              {/* Bottom spacer */}
+              <div className="flex-1 min-h-0" />
             </div>
           </div>
         </motion.div>

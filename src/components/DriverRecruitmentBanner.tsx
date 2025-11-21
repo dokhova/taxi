@@ -7,26 +7,36 @@ interface DriverRecruitmentBannerProps {
 
 export function DriverRecruitmentBanner({ onClick }: DriverRecruitmentBannerProps) {
   return (
-    <button onClick={onClick} className="bg-white rounded-xl shadow-md overflow-hidden transition-transform max-w-xs relative active:scale-[0.98]">
-      <div className="flex items-center relative z-10">
-        <div className="flex-1 p-3 pr-2">
-          <h3 className="text-base mb-0.5 text-left flex items-center gap-1">
-            Спокойный режим
-            <ChevronRight className="w-4 h-4 translate-y-0.5" />
-          </h3>
-          <p className="text-xs text-gray-400 text-left">
-            Пауза в движении
-          </p>
-        </div>
-        <div className="w-20 h-16"></div>
-      </div>
-      <div className="absolute top-0 right-0 w-32 h-full">
+    <button 
+      onClick={onClick} 
+      className="relative overflow-hidden rounded-2xl transition-all max-w-xs active:scale-[0.98] w-full"
+      style={{
+        background: 'rgba(0, 0, 0, 0.3)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
+      }}
+    >
+      {/* Background image */}
+      <div className="absolute inset-0">
         <img
           src={abstractImage}
           alt="Relaxation"
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover opacity-15"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-white via-white/60 to-transparent"></div>
+      </div>
+
+      <div className="flex items-center justify-between p-4 relative z-10">
+        <div className="text-left">
+          <h3 className="text-base text-white mb-0.5 flex items-center gap-1">
+            Спокойный режим
+          </h3>
+          <p className="text-xs text-white/70">
+            Пауза в движении
+          </p>
+        </div>
+        
+        {/* Arrow */}
+        <ChevronRight className="w-5 h-5 text-white/70 flex-shrink-0 ml-2" />
       </div>
     </button>
   );

@@ -1,5 +1,4 @@
 import { MapPin, Navigation } from "lucide-react";
-import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { DriverRecruitmentBanner } from "./DriverRecruitmentBanner";
 
 interface TripMapProps {
@@ -8,17 +7,7 @@ interface TripMapProps {
 
 export function TripMap({ onRelaxationClick }: TripMapProps) {
   return (
-    <div className="relative w-full h-[400px] bg-gradient-to-br from-green-50 to-blue-50 rounded-2xl overflow-hidden">
-      {/* Map background image */}
-      <ImageWithFallback
-        src="https://images.unsplash.com/photo-1717343824623-06293a62a70d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjaXR5JTIwbWFwfGVufDF8fHx8MTc2MzU0MDg0OXww&ixlib=rb-4.1.0&q=80&w=1080"
-        alt="City map"
-        className="absolute inset-0 w-full h-full object-cover opacity-40"
-      />
-      
-      {/* Overlay gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-green-50/80 to-blue-50/80"></div>
-
+    <div className="relative w-full h-[400px] rounded-2xl overflow-hidden">
       {/* Route line from car to destination */}
       <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
         <path
@@ -44,23 +33,23 @@ export function TripMap({ onRelaxationClick }: TripMapProps) {
       {/* Car position (current location) */}
       <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
         <div className="relative">
-          <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center shadow-lg ring-4 ring-white">
-            <Navigation className="w-6 h-6 text-white transform rotate-45 -translate-x-0.5" />
+          <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg ring-4 ring-white/20">
+            <Navigation className="w-6 h-6 text-[#19191B] transform rotate-45 -translate-x-0.5" />
           </div>
           {/* Pulsing circle */}
-          <div className="absolute inset-0 w-12 h-12 bg-black rounded-full animate-ping opacity-20"></div>
+          <div className="absolute inset-0 w-12 h-12 bg-white rounded-full animate-ping opacity-20"></div>
         </div>
       </div>
 
       {/* ETA badge */}
-      <div className="absolute top-4 left-4 bg-white px-4 py-2 rounded-full shadow-lg flex items-center gap-2">
+      <div className="absolute top-4 left-4 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg flex items-center gap-2 border border-white/20">
         <div className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: '#34AB53' }}></div>
-        <span className="text-sm">12 мин до прибытия</span>
+        <span className="text-sm text-white">12 мин до прибытия</span>
       </div>
 
       {/* Distance badge */}
-      <div className="absolute top-4 right-4 bg-white px-4 py-2 rounded-full shadow-lg">
-        <span className="text-sm">3.2 км</span>
+      <div className="absolute top-4 right-4 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full shadow-lg border border-white/20">
+        <span className="text-sm text-white">3.2 км</span>
       </div>
 
       {/* Driver recruitment banner */}

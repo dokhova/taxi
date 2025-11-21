@@ -25,15 +25,15 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 relative">
+    <div className="min-h-screen bg-[#19191B] relative">
       {/* Map background for entire screen */}
       <div className="fixed inset-0 pointer-events-none">
         <img
           src="https://images.unsplash.com/photo-1717343824623-06293a62a70d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjaXR5JTIwbWFwfGVufDF8fHx8MTc2MzU0MDg0OXww&ixlib=rb-4.1.0&q=80&w=1080"
           alt="City map background"
-          className="w-full h-full object-cover opacity-40"
+          className="w-full h-full object-cover opacity-20"
         />
-        <div className="absolute inset-0 bg-gradient-to-br from-green-50/80 to-blue-50/80"></div>
+        <div className="absolute inset-0 bg-[#19191B]/60"></div>
       </div>
 
       {/* Main content */}
@@ -61,9 +61,9 @@ export default function App() {
         />
 
         {/* Safety button */}
-        <button className="w-full bg-white hover:bg-gray-50 border border-gray-200 rounded-2xl p-4 flex items-center justify-center gap-2 transition-colors">
+        <button className="w-full bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl p-4 flex items-center justify-center gap-2 transition-colors">
           <Shield className="w-5 h-5" style={{ color: '#4285F4' }} />
-          <span className="text-sm text-gray-700">Безопасность поездки</span>
+          <span className="text-sm text-white/90">Безопасность поездки</span>
         </button>
 
         {/* Relaxation modal */}
