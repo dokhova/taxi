@@ -2,6 +2,7 @@ import { DriverInfo } from "./components/DriverInfo";
 import { TripMap } from "./components/TripMap";
 import { TripDetails } from "./components/TripDetails";
 import { RelaxationModal } from "./components/RelaxationModal";
+import { MiniPlayer } from "./components/MiniPlayer";
 import { MoreVertical, Shield, ChevronRight, Play, Pause } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 
@@ -18,16 +19,19 @@ export default function App() {
       name: "Тишина в пути",
       subtitle: "Медитация",
       icon: "meditation",
+      src: "/mp3/pause_ru.mp3",
     },
     ambient: {
       name: "Мягкий фон",
       subtitle: "Амбиент",
       icon: "ambient",
+      src: "/mp3/ambient.mp3",
     },
     nature: {
       name: "Звук природы",
       subtitle: "Природа",
       icon: "nature",
+      src: "/mp3/nature.mp3",
     },
   };
 
@@ -73,6 +77,23 @@ export default function App() {
     };
   }, [isPlaying]);
 
+  // Смена трека при изменении selectedTrack
+  useEffect(() => {
+    const currentRef = audioRef.current;
+    if (currentRef) {
+      const wasPlaying = isPlaying;
+      currentRef.pause();
+      currentRef.src = tracks[selectedTrack as keyof typeof tracks].src;
+      currentRef.load();
+      setCurrentTime(0);
+      if (wasPlaying) {
+        currentRef.play().catch(() => {
+          setIsPlaying(false);
+        });
+      }
+    }
+  }, [selectedTrack]);
+
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
@@ -98,9 +119,8 @@ export default function App() {
 
       {/* Main content */}
       <div className="max-w-2xl mx-auto p-4 space-y-4 relative z-10">
-        {/* Map */}
-        <TripMap 
-          onRelaxationClick={() => setIsRelaxationModalOpen(true)}
+        {/* Mini Player */}
+        <MiniPlayer
           isPlaying={isPlaying}
           currentTime={currentTime}
           togglePlayPause={togglePlayPause}
@@ -112,6 +132,9 @@ export default function App() {
           onTrackChange={setSelectedTrack}
           tracks={tracks}
         />
+
+        {/* Map */}
+        <TripMap />
 
         {/* Driver info */}
         <DriverInfo
@@ -149,10 +172,10 @@ export default function App() {
           tracks={tracks}
         />
 
-        {/* Audio player - using working source */}
+        {/* Audio player */}
         <audio 
           ref={audioRef} 
-          src="https://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3" 
+          src={tracks[selectedTrack as keyof typeof tracks].src}
           loop 
           onError={() => setIsPlaying(false)}
         />
