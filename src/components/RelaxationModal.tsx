@@ -286,7 +286,7 @@ export function RelaxationModal({
                       {[...Array(9)].map((_, i) => (
                         <div
                           key={i}
-                          className={activeTab === "meditation" ? "bg-green-500 rounded-full" : "bg-white/50 rounded-full"}
+                          className={activeTab === "meditation" ? "bg-green-500 rounded-full w-1 h-1" : "bg-white/50 rounded-full w-1 h-1"}
                         />
                       ))}
                     </div>
@@ -343,7 +343,7 @@ export function RelaxationModal({
                     activeTab === "nature" ? "bg-emerald-500/20 border border-emerald-500/30" : "bg-white/10"
                   }`}>
                     <div className="relative w-4 h-4">
-                      <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full ${
+                      <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full ${
                         activeTab === "nature" ? "bg-emerald-500" : "bg-white/50"
                       }`} />
                       <div className={`absolute bottom-0 left-0 w-1.5 h-1.5 rounded-full ${
@@ -447,7 +447,7 @@ export function RelaxationModal({
                     activeTab === "nature" ? "bg-emerald-500/20 border border-emerald-500/30" : "bg-white/10"
                   }`}>
                     <div className="relative w-5 h-5">
-                      <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-2.5 h-2.5 rounded-full ${
+                      <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full ${
                         activeTab === "nature" ? "bg-emerald-500" : "bg-white/50"
                       }`} />
                       <div className={`absolute bottom-0 left-0 w-2 h-2 rounded-full ${
@@ -472,17 +472,17 @@ export function RelaxationModal({
             </div>
 
             {/* Right - Player */}
-            <div className="relative px-3 md:px-5 pt-4 pb-3 flex flex-col flex-1 justify-center">
+            <div className="relative px-3 md:px-5 pt-6 pb-6 flex flex-col flex-1 justify-center">
               {/* Title */}
-              <div className="text-center mb-4">
-                <h2 className="text-white text-lg mb-0.5">
+              <div className="text-center mb-8">
+                <h2 className="text-white text-2xl mb-2">
                   {activeTab === "meditation"
                     ? "Тишина в пути"
                     : activeTab === "ambient"
                       ? "Мягкий фон"
                       : "Звук природы"}
                 </h2>
-                <p className="text-white/50 text-sm">
+                <p className="text-white/70 text-base">
                   {activeTab === "meditation"
                     ? "Медитация"
                     : activeTab === "ambient"
@@ -491,122 +491,91 @@ export function RelaxationModal({
                 </p>
               </div>
 
-              {/* Circular player */}
-              <div className="relative w-36 h-36 md:w-44 md:h-44 flex items-center justify-center mx-auto mb-4 flex-shrink-0">
-                {/* Single circle - always visible */}
-                <svg className="absolute inset-0 w-full h-full transform -rotate-90" viewBox="0 0 224 224">
-                  {/* Background circle */}
-                  <circle
-                    cx="112"
-                    cy="112"
-                    r="100"
-                    stroke="rgba(255, 255, 255, 0.2)"
-                    strokeWidth="2"
-                    fill="none"
+              {/* Progress bar */}
+              <div className="mb-8 px-4">
+                <div className="relative h-1 bg-white/30 rounded-full overflow-visible mb-4">
+                  {/* Progress fill */}
+                  <div 
+                    className="absolute top-0 left-0 h-full bg-white rounded-full transition-all duration-300"
+                    style={{
+                      width: `${progress}%`,
+                    }}
                   />
-                  {/* Progress circle */}
-                  {(isPlaying || currentTime > 0) && (
-                    <circle
-                      cx="112"
-                      cy="112"
-                      r="100"
-                      stroke={
-                        activeTab === "meditation"
-                          ? "#34AB53"
-                          : activeTab === "ambient"
-                            ? "#4285F4"
-                            : "#10B981"
-                      }
-                      strokeWidth="2"
-                      fill="none"
-                      strokeDasharray={2 * Math.PI * 100}
-                      strokeDashoffset={
-                        2 * Math.PI * 100 -
-                        (progress / 100) * 2 * Math.PI * 100
-                      }
-                      strokeLinecap="round"
-                      style={{
-                        transition: "stroke-dashoffset 0.5s ease",
-                      }}
-                    />
-                  )}
-                </svg>
-
-                {/* Center Play/Pause button */}
-                <button
-                  onClick={() => setIsPlaying(!isPlaying)}
-                  className="relative z-10 w-20 h-20 bg-white/10 hover:bg-white/20 border border-white/20 rounded-full flex items-center justify-center transition-all"
-                >
-                  {isPlaying ? (
-                    <Pause 
-                      className="w-8 h-8" 
-                      fill="currentColor"
-                      style={{
-                        color: activeTab === "meditation"
-                          ? "#34AB53"
-                          : activeTab === "ambient"
-                            ? "#4285F4"
-                            : "#10B981"
-                      }}
-                    />
-                  ) : (
-                    <Play 
-                      className="w-8 h-8 translate-x-0.5" 
-                      fill="currentColor"
-                      style={{
-                        color: activeTab === "meditation"
-                          ? "#34AB53"
-                          : activeTab === "ambient"
-                            ? "#4285F4"
-                            : "#10B981"
-                      }}
-                    />
-                  )}
-                </button>
-              </div>
-
-              {/* Time */}
-              <div className="flex items-center justify-center gap-6 mb-2 text-sm">
-                <span className="text-white/70">
-                  {formatTime(currentTime)}
-                </span>
-                <span className="text-white/40">
-                  {formatTime(duration)}
-                </span>
+                  {/* Slider thumb */}
+                  <div 
+                    className="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow-lg transition-all duration-300"
+                    style={{
+                      left: `calc(${progress}% - 6px)`,
+                    }}
+                  />
+                </div>
+                
+                {/* Time display */}
+                <div className="flex items-center justify-between text-base">
+                  <span className="text-white/90">
+                    {formatTime(currentTime)}
+                  </span>
+                  <span className="text-white/90">
+                    {formatTime(duration)}
+                  </span>
+                </div>
               </div>
 
               {/* Controls */}
-              <div className="flex items-center justify-center gap-6">
+              <div className="flex items-center justify-center gap-8">
                 <button
-                  onClick={() => setIsRepeat(!isRepeat)}
-                  className={`w-10 h-10 flex items-center justify-center hover:bg-white/10 rounded-full transition-colors ${
-                    isRepeat ? "opacity-100" : "opacity-30"
+                  onClick={() => setIsShuffle(!isShuffle)}
+                  className={`w-12 h-12 flex items-center justify-center hover:bg-white/10 rounded-full transition-all ${
+                    isShuffle ? "opacity-100" : "opacity-60 hover:opacity-100"
                   }`}
                 >
-                  <Repeat className="w-5 h-5 text-white" />
+                  <Shuffle className="w-6 h-6 text-white" />
                 </button>
                 
                 <button
                   onClick={handlePrevious}
-                  className="w-10 h-10 flex items-center justify-center hover:bg-white/10 rounded-full transition-colors opacity-50 hover:opacity-100"
+                  className="w-12 h-12 flex items-center justify-center hover:bg-white/10 rounded-full transition-all"
                 >
-                  <SkipBack className="w-5 h-5 text-white" />
+                  <SkipBack className="w-7 h-7 text-white" fill="white" />
+                </button>
+                
+                {/* Center Play/Pause button with ring */}
+                <button
+                  onClick={() => setIsPlaying(!isPlaying)}
+                  className="relative w-20 h-20 flex items-center justify-center transition-all hover:scale-105"
+                >
+                  {/* Inner button */}
+                  <div className="relative z-10 w-14 h-14 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/20">
+                    {isPlaying ? (
+                      <Pause 
+                        className="w-7 h-7" 
+                        fill="white"
+                        color="white"
+                      />
+                    ) : (
+                      <Play 
+                        className="w-7 h-7 translate-x-0.5" 
+                        fill="white"
+                        color="white"
+                      />
+                    )}
+                  </div>
                 </button>
                 
                 <button
                   onClick={handleNext}
-                  className="w-10 h-10 flex items-center justify-center hover:bg-white/10 rounded-full transition-colors opacity-50 hover:opacity-100"
+                  className="w-12 h-12 flex items-center justify-center hover:bg-white/10 rounded-full transition-all"
                 >
-                  <SkipForward className="w-5 h-5 text-white" />
+                  <SkipForward className="w-7 h-7 text-white" fill="white" />
                 </button>
                 
                 <button
-                  onClick={handleShuffle}
-                  className={`w-10 h-10 flex items-center justify-center hover:bg-white/10 rounded-full transition-colors ${
-                    isShuffle ? "opacity-100" : "opacity-30"
+                  onClick={() => setIsRepeat(!isRepeat)}
+                  className={`w-12 h-12 flex items-center justify-center hover:bg-white/10 rounded-full transition-all ${
+                    isRepeat ? "opacity-100" : "opacity-60 hover:opacity-100"
                   }`}
                 >
-                  <Shuffle className="w-5 h-5 text-white" />
+                  <Repeat className="w-6 h-6 text-white" />
                 </button>
               </div>
             </div>

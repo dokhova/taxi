@@ -2,11 +2,34 @@ import { DriverInfo } from "./components/DriverInfo";
 import { TripMap } from "./components/TripMap";
 import { TripDetails } from "./components/TripDetails";
 import { RelaxationModal } from "./components/RelaxationModal";
-import { MoreVertical, Shield, ChevronRight } from "lucide-react";
-import { useState } from "react";
+import { MoreVertical, Shield, ChevronRight, Play, Pause } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
 
 export default function App() {
   const [isRelaxationModalOpen, setIsRelaxationModalOpen] = useState(false);
+  const [isRelaxationExpanded, setIsRelaxationExpanded] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [selectedTrack, setSelectedTrack] = useState<string>("meditation");
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  const tracks = {
+    meditation: {
+      name: "Тишина в пути",
+      subtitle: "Медитация",
+      icon: "meditation",
+    },
+    ambient: {
+      name: "Мягкий фон",
+      subtitle: "Амбиент",
+      icon: "ambient",
+    },
+    nature: {
+      name: "Звук природы",
+      subtitle: "Природа",
+      icon: "nature",
+    },
+  };
 
   const tripData = {
     driver: {
@@ -24,6 +47,43 @@ export default function App() {
     status: "В пути",
   };
 
+  useEffect(() => {
+    const currentRef = audioRef.current;
+    if (currentRef) {
+      if (isPlaying) {
+        currentRef.play().catch(() => {
+          setIsPlaying(false);
+        });
+      } else {
+        currentRef.pause();
+      }
+    }
+    
+    const interval = setInterval(() => {
+      if (currentRef && isPlaying) {
+        setCurrentTime(currentRef.currentTime);
+      }
+    }, 100);
+    
+    return () => {
+      clearInterval(interval);
+      if (currentRef) {
+        currentRef.pause();
+      }
+    };
+  }, [isPlaying]);
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
+  };
+
+  const togglePlayPause = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsPlaying(!isPlaying);
+  };
+
   return (
     <div className="min-h-screen bg-[#19191B] relative">
       {/* Map background for entire screen */}
@@ -39,23 +99,19 @@ export default function App() {
       {/* Main content */}
       <div className="max-w-2xl mx-auto p-4 space-y-4 relative z-10">
         {/* Map */}
-        <TripMap onRelaxationClick={() => setIsRelaxationModalOpen(true)} />
-
-        {/* Relaxation button */}
-        <button 
-          onClick={() => setIsRelaxationModalOpen(true)}
-          className="bg-white/5 hover:bg-white/10 border border-white/10 backdrop-blur-sm rounded-2xl p-4 inline-flex items-center gap-3 transition-all active:scale-[0.98]"
-        >
-          <div className="text-left">
-            <h3 className="text-base text-white mb-0.5">
-              Спокойный режим
-            </h3>
-            <p className="text-xs text-white/60">
-              Пауза в движении
-            </p>
-          </div>
-          <ChevronRight className="w-5 h-5 text-white/50 flex-shrink-0" />
-        </button>
+        <TripMap 
+          onRelaxationClick={() => setIsRelaxationModalOpen(true)}
+          isPlaying={isPlaying}
+          currentTime={currentTime}
+          togglePlayPause={togglePlayPause}
+          formatTime={formatTime}
+          audioRef={audioRef}
+          isExpanded={isRelaxationExpanded}
+          onExpandToggle={() => setIsRelaxationExpanded(!isRelaxationExpanded)}
+          selectedTrack={selectedTrack}
+          onTrackChange={setSelectedTrack}
+          tracks={tracks}
+        />
 
         {/* Driver info */}
         <DriverInfo
@@ -86,6 +142,19 @@ export default function App() {
         <RelaxationModal
           isOpen={isRelaxationModalOpen}
           onClose={() => setIsRelaxationModalOpen(false)}
+          isExpanded={isRelaxationExpanded}
+          onExpandToggle={() => setIsRelaxationExpanded(!isRelaxationExpanded)}
+          selectedTrack={selectedTrack}
+          onTrackChange={setSelectedTrack}
+          tracks={tracks}
+        />
+
+        {/* Audio player - using working source */}
+        <audio 
+          ref={audioRef} 
+          src="https://commondatastorage.googleapis.com/codeskulptor-demos/DDR_assets/Kangaroo_MusiQue_-_The_Neverwritten_Role_Playing_Game.mp3" 
+          loop 
+          onError={() => setIsPlaying(false)}
         />
       </div>
     </div>
