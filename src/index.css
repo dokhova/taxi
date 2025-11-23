@@ -481,36 +481,36 @@
     margin-top: calc(var(--spacing) * 1);
   }
 
-  .mt-2 {
-    margin-top: calc(var(--spacing) * 2);
+  .mt-\[10px\] {
+    margin-top: 10px;
   }
 
   .mb-1 {
     margin-bottom: calc(var(--spacing) * 1);
   }
 
+  .mb-1\.5 {
+    margin-bottom: calc(var(--spacing) * 1.5);
+  }
+
   .mb-2 {
     margin-bottom: calc(var(--spacing) * 2);
+  }
+
+  .mb-3 {
+    margin-bottom: calc(var(--spacing) * 3);
   }
 
   .mb-4 {
     margin-bottom: calc(var(--spacing) * 4);
   }
 
-  .mb-5 {
-    margin-bottom: calc(var(--spacing) * 5);
-  }
-
-  .mb-6 {
-    margin-bottom: calc(var(--spacing) * 6);
-  }
-
   .mb-8 {
     margin-bottom: calc(var(--spacing) * 8);
   }
 
-  .-ml-\[60px\] {
-    margin-left: -60px;
+  .-ml-\[44px\] {
+    margin-left: -44px;
   }
 
   .flex {
@@ -565,8 +565,16 @@
     height: calc(var(--spacing) * 8);
   }
 
+  .h-9 {
+    height: calc(var(--spacing) * 9);
+  }
+
   .h-10 {
     height: calc(var(--spacing) * 10);
+  }
+
+  .h-11 {
+    height: calc(var(--spacing) * 11);
   }
 
   .h-12 {
@@ -637,8 +645,16 @@
     width: calc(var(--spacing) * 8);
   }
 
+  .w-9 {
+    width: calc(var(--spacing) * 9);
+  }
+
   .w-10 {
     width: calc(var(--spacing) * 10);
+  }
+
+  .w-11 {
+    width: calc(var(--spacing) * 11);
   }
 
   .w-12 {
@@ -759,6 +775,10 @@
 
   .gap-4 {
     gap: calc(var(--spacing) * 4);
+  }
+
+  .gap-6 {
+    gap: calc(var(--spacing) * 6);
   }
 
   .gap-8 {
@@ -1073,8 +1093,8 @@
     padding-inline: calc(var(--spacing) * 4);
   }
 
-  .px-5 {
-    padding-inline: calc(var(--spacing) * 5);
+  .py-2 {
+    padding-block: calc(var(--spacing) * 2);
   }
 
   .py-2\.5 {
@@ -1083,10 +1103,6 @@
 
   .py-3 {
     padding-block: calc(var(--spacing) * 3);
-  }
-
-  .py-4 {
-    padding-block: calc(var(--spacing) * 4);
   }
 
   .pt-4 {
@@ -1101,8 +1117,8 @@
     padding-bottom: calc(var(--spacing) * 2);
   }
 
-  .pb-4 {
-    padding-bottom: calc(var(--spacing) * 4);
+  .pb-3 {
+    padding-bottom: calc(var(--spacing) * 3);
   }
 
   .pb-6 {
@@ -1144,6 +1160,10 @@
   .text-xs {
     font-size: var(--text-xs);
     line-height: var(--tw-leading, var(--text-xs--line-height));
+  }
+
+  .text-\[10px\] {
+    font-size: 10px;
   }
 
   .whitespace-nowrap {

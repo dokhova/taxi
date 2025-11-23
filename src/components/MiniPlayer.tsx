@@ -59,38 +59,38 @@ export function MiniPlayer({
   
   // Маппинг иконок
   const iconMap: { [key: string]: JSX.Element } = {
-    meditation: <Car className="w-7 h-7 text-white" strokeWidth={1.5} />,
-    ambient: <Waves className="w-7 h-7 text-white" strokeWidth={1.5} />,
-    nature: <Leaf className="w-7 h-7 text-white" strokeWidth={1.5} />,
+    meditation: <Car className="w-5 h-5 text-white" strokeWidth={1.5} />,
+    ambient: <Waves className="w-5 h-5 text-white" strokeWidth={1.5} />,
+    nature: <Leaf className="w-5 h-5 text-white" strokeWidth={1.5} />,
   };
   
   return (
     <div className="relative">
       {/* Collapsed state - стеклянная капсула (всегда рендерится для сохранения места) */}
       <div
-        className={`bg-white/5 rounded-2xl border border-white/10 backdrop-blur-sm transition-opacity mt-2 ${
+        className={`bg-white/5 rounded-2xl border border-white/10 backdrop-blur-sm transition-opacity mt-[10px] ${
           isExpanded ? 'opacity-0 pointer-events-none' : 'opacity-100'
         }`}
         style={{
-          maxWidth: '260px',
+          maxWidth: '220px',
         }}
       >
-        <div className="flex items-center gap-3 px-4 py-3">
+        <div className="flex items-center gap-2 px-3 py-2">
           {/* Кнопка Play/Pause в круге слева */}
           <button
             onClick={(e) => {
               e.stopPropagation();
               togglePlayPause(e);
             }}
-            className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 hover:bg-white/15 transition-colors"
+            className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 hover:bg-white/15 transition-colors"
             style={{
               background: 'rgba(255, 255, 255, 0.1)',
             }}
           >
             {isPlaying ? (
-              <Pause className="w-5 h-5 text-white" fill="white" />
+              <Pause className="w-4 h-4 text-white" fill="white" />
             ) : (
-              <Play className="w-5 h-5 text-white translate-x-[1px]" fill="white" />
+              <Play className="w-4 h-4 text-white translate-x-[1px]" fill="white" />
             )}
           </button>
           
@@ -99,7 +99,7 @@ export function MiniPlayer({
             onClick={onExpandToggle}
             className="flex-1 text-left"
           >
-            <div className="text-white truncate">
+            <div className="text-white truncate text-sm">
               {isPlaying ? tracks[selectedTrack].name : 'Пауза в пути'}
             </div>
             <div className="text-white/50 text-xs">
@@ -110,9 +110,9 @@ export function MiniPlayer({
           {/* Стрелочка вниз справа */}
           <button
             onClick={onExpandToggle}
-            className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors"
+            className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors"
           >
-            <ChevronDown className="w-5 h-5 text-white/50" />
+            <ChevronDown className="w-4 h-4 text-white/50" />
           </button>
         </div>
       </div>
@@ -122,29 +122,29 @@ export function MiniPlayer({
         <div 
           className="absolute top-0 left-0 z-50 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-sm"
           style={{
-            maxWidth: '260px',
+            maxWidth: '220px',
           }}
         >
           {/* Header */}
-          <div className="flex items-center gap-3 px-4 py-3">
-            <div className="w-12 h-12 flex-shrink-0" /> {/* Spacer for alignment */}
-            <h3 className="flex-1 text-white/90 -ml-[60px]">{tracks[selectedTrack].name}</h3>
+          <div className="flex items-center gap-2 px-3 py-2">
+            <div className="w-9 h-9 flex-shrink-0" /> {/* Spacer for alignment */}
+            <h3 className="flex-1 text-white/90 text-sm -ml-[44px]">{tracks[selectedTrack].name}</h3>
             <button
               onClick={onExpandToggle}
-              className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors"
+              className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors"
             >
-              <ChevronUp className="w-5 h-5 text-white/70" />
+              <ChevronUp className="w-4 h-4 text-white/70" />
             </button>
           </div>
           
           {/* Track cards */}
-          <div className="relative mb-6">
-            <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide px-4" ref={scrollContainerRef} style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+          <div className="relative mb-4">
+            <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide px-3" ref={scrollContainerRef} style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
               {trackKeys.map((key) => (
                 <button
                   key={key}
                   onClick={() => onTrackChange(key)}
-                  className={`flex items-center gap-3 px-5 py-4 rounded-xl transition-all flex-shrink-0 border shadow-none ${ 
+                  className={`flex items-center gap-2 px-3 py-2 rounded-xl transition-all flex-shrink-0 border shadow-none ${ 
                     selectedTrack === key 
                       ? 'bg-transparent border-white/20' 
                       : 'bg-transparent border-white/5 hover:border-white/15'
@@ -155,8 +155,8 @@ export function MiniPlayer({
                     {iconMap[key]}
                   </div>
                   <div className="text-left">
-                    <div className="text-sm text-white/90 whitespace-nowrap">{tracks[key].name}</div>
-                    <div className="text-xs text-white/50 whitespace-nowrap">{tracks[key].subtitle}</div>
+                    <div className="text-xs text-white/90 whitespace-nowrap">{tracks[key].name}</div>
+                    <div className="text-[10px] text-white/50 whitespace-nowrap">{tracks[key].subtitle}</div>
                   </div>
                 </button>
               ))}
@@ -166,10 +166,10 @@ export function MiniPlayer({
           </div>
           
           {/* Плеер */}
-          <div className="px-4 pb-4">
+          <div className="px-3 pb-3">
             {/* Progress bar */}
-            <div className="mb-5">
-              <div className="h-1 bg-white/20 rounded-full overflow-hidden mb-2">
+            <div className="mb-3">
+              <div className="h-1 bg-white/20 rounded-full overflow-hidden mb-1.5">
                 <div 
                   className="h-full bg-[#34AB53] rounded-full transition-all"
                   style={{
@@ -179,14 +179,14 @@ export function MiniPlayer({
                   }}
                 />
               </div>
-              <div className="flex justify-between text-xs text-white/40">
+              <div className="flex justify-between text-[10px] text-white/40">
                 <span>{formatTime(currentTime)}</span>
                 <span>{audioRef.current?.duration ? formatTime(audioRef.current.duration) : '0:00'}</span>
               </div>
             </div>
             
             {/* Кнопки правления */}
-            <div className="flex items-center justify-center gap-8">
+            <div className="flex items-center justify-center gap-6">
               <button
                 className="text-white/60 hover:text-white/90 transition-colors"
                 onClick={() => {
@@ -195,17 +195,17 @@ export function MiniPlayer({
                   onTrackChange(trackKeys[prevIndex]);
                 }}
               >
-                <SkipBack className="w-5 h-5" />
+                <SkipBack className="w-4 h-4" />
               </button>
               
               <button
                 onClick={togglePlayPause}
-                className="w-14 h-14 bg-[#34AB53] hover:bg-[#3ec05f] rounded-full flex items-center justify-center transition-all shadow-lg"
+                className="w-11 h-11 bg-[#34AB53] hover:bg-[#3ec05f] rounded-full flex items-center justify-center transition-all shadow-lg"
               >
                 {isPlaying ? (
-                  <Pause className="w-6 h-6 text-white" fill="white" />
+                  <Pause className="w-5 h-5 text-white" fill="white" />
                 ) : (
-                  <Play className="w-6 h-6 text-white translate-x-[1px]" fill="white" />
+                  <Play className="w-5 h-5 text-white translate-x-[1px]" fill="white" />
                 )}
               </button>
               
@@ -217,7 +217,7 @@ export function MiniPlayer({
                   onTrackChange(trackKeys[nextIndex]);
                 }}
               >
-                <SkipForward className="w-5 h-5" />
+                <SkipForward className="w-4 h-4" />
               </button>
             </div>
           </div>
