@@ -29,7 +29,23 @@ export function TripMap() {
       {/* Car position (current location) */}
       <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
         <div className="relative">
-          {/* Car icon removed */}
+          {/* Пульсирующий круг текущей позиции */}
+          <div className="relative flex items-center justify-center">
+            {/* Внешний пульсирующий круг */}
+            <div 
+              className="absolute w-8 h-8 rounded-full animate-ping"
+              style={{ 
+                background: 'rgba(52, 171, 83, 0.4)',
+              }}
+            />
+            {/* Основной круг */}
+            <div 
+              className="relative w-4 h-4 rounded-full border-2 border-white shadow-lg"
+              style={{ 
+                background: '#34AB53',
+              }}
+            />
+          </div>
         </div>
       </div>
     </div>
