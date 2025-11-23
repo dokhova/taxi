@@ -271,7 +271,7 @@ export function RelaxationModal({
                 {/* Meditation */}
                 <motion.button
                   onClick={() => setActiveTab("meditation")}
-                  className={`flex-shrink-0 w-56 flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all snap-center ${
+                  className={`flex-shrink-0 w-56 flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all snap-center shadow-none ${
                     activeTab === "meditation"
                       ? "bg-white/10 border border-white/20"
                       : "bg-white/5 hover:bg-white/10 border border-transparent"

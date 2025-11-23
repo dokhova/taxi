@@ -144,12 +144,12 @@ export function MiniPlayer({
           
           {/* Track cards */}
           <div className="relative mb-6">
-            <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide px-4 pr-8" ref={scrollContainerRef}>
+            <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide px-4" ref={scrollContainerRef} style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
               {trackKeys.map((key) => (
                 <button
                   key={key}
                   onClick={() => onTrackChange(key)}
-                  className={`flex items-center gap-3 px-5 py-4 rounded-xl transition-all flex-shrink-0 border ${ 
+                  className={`flex items-center gap-3 px-5 py-4 rounded-xl transition-all flex-shrink-0 border shadow-none ${ 
                     selectedTrack === key 
                       ? 'bg-transparent border-white/40' 
                       : 'bg-transparent border-white/10 hover:border-white/20'
@@ -165,14 +165,9 @@ export function MiniPlayer({
                   </div>
                 </button>
               ))}
+              {/* Spacer для предотвращения ухода последней карточки слишком влево */}
+              <div className="flex-shrink-0 w-8" />
             </div>
-            {/* Gradient fade indicator на правом краю */}
-            <div 
-              className="absolute top-0 right-0 h-full w-12 pointer-events-none"
-              style={{
-                background: 'linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1) 70%)'
-              }}
-            />
           </div>
           
           {/* Плеер */}

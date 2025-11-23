@@ -1,4 +1,4 @@
-import { Star, Phone, MessageCircle } from "lucide-react";
+import { Phone, MessageCircle } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 
 interface DriverInfoProps {
@@ -33,14 +33,8 @@ export function DriverInfo({
 
         {/* Driver info - centered */}
         <div className="flex-1 min-w-0">
-          {/* Name and rating */}
-          <div className="flex items-center gap-2 mb-1">
-            <h3 className="text-white truncate">{name}</h3>
-            <div className="flex items-center gap-1 bg-yellow-500/20 px-2 py-0.5 rounded-full flex-shrink-0">
-              <Star className="w-3.5 h-3.5 text-yellow-500 fill-yellow-500" />
-              <span className="text-sm text-yellow-500">{rating}</span>
-            </div>
-          </div>
+          {/* Name */}
+          <h3 className="text-white truncate mb-1">{name}</h3>
           
           {/* Car model */}
           <p className="text-sm text-white/70">

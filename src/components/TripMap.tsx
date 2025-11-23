@@ -1,4 +1,6 @@
-import { MapPin, Navigation } from "lucide-react";
+import { MapPin } from "lucide-react";
+import { ImageWithFallback } from "./figma/ImageWithFallback";
+import carTopView from "figma:asset/c320f1901adf0237bb34f9d14450c9679cef5c95.png";
 
 export function TripMap() {
   return (
@@ -27,9 +29,11 @@ export function TripMap() {
       {/* Car position (current location) */}
       <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
         <div className="relative">
-          <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg ring-4 ring-white/20">
-            <Navigation className="w-6 h-6 text-[#19191B] transform rotate-45 -translate-x-0.5" />
-          </div>
+          <ImageWithFallback
+            src={carTopView}
+            alt="Car top view"
+            className="w-12 h-12 object-contain drop-shadow-lg"
+          />
         </div>
       </div>
     </div>
