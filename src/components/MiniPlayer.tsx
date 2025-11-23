@@ -68,14 +68,11 @@ export function MiniPlayer({
     <div className="relative">
       {/* Collapsed state - стеклянная капсула (всегда рендерится для сохранения места) */}
       <div
-        className={`overflow-hidden rounded-2xl shadow-lg border backdrop-blur-xl transition-opacity mt-2 ${
+        className={`bg-white/5 rounded-2xl border border-white/10 backdrop-blur-sm transition-opacity mt-2 ${
           isExpanded ? 'opacity-0 pointer-events-none' : 'opacity-100'
         }`}
         style={{
-          background: 'rgba(255, 255, 255, 0.1)',
-          borderColor: 'rgba(255, 255, 255, 0.05)',
           maxWidth: '260px',
-          boxShadow: '0 4px 16px rgba(0, 0, 0, 0.4)',
         }}
       >
         <div className="flex items-center gap-3 px-4 py-3">
@@ -85,7 +82,7 @@ export function MiniPlayer({
               e.stopPropagation();
               togglePlayPause(e);
             }}
-            className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 hover:bg-white/10 transition-colors"
+            className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 hover:bg-white/15 transition-colors"
             style={{
               background: 'rgba(255, 255, 255, 0.1)',
             }}
@@ -106,7 +103,7 @@ export function MiniPlayer({
               {isPlaying ? tracks[selectedTrack].name : 'Пауза в пути'}
             </div>
             <div className="text-white/40 text-sm">
-              {isPlaying ? tracks[selectedTrack].subtitle : 'практики'}
+              {isPlaying ? tracks[selectedTrack].subtitle : 'Практики'}
             </div>
           </button>
           
@@ -123,11 +120,9 @@ export function MiniPlayer({
       {/* Expanded state - полная панель поверх всего */}
       {isExpanded && (
         <div 
-          className="absolute top-0 left-0 z-50 overflow-hidden rounded-3xl shadow-2xl backdrop-blur-xl border border-white/30"
+          className="absolute top-0 left-0 z-50 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-sm"
           style={{
-            background: 'rgba(255, 255, 255, 0.1)',
             maxWidth: '260px',
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
           }}
         >
           {/* Header */}
@@ -151,8 +146,8 @@ export function MiniPlayer({
                   onClick={() => onTrackChange(key)}
                   className={`flex items-center gap-3 px-5 py-4 rounded-xl transition-all flex-shrink-0 border shadow-none ${ 
                     selectedTrack === key 
-                      ? 'bg-transparent border-white/40' 
-                      : 'bg-transparent border-white/10 hover:border-white/20'
+                      ? 'bg-transparent border-white/20' 
+                      : 'bg-transparent border-white/5 hover:border-white/15'
                   }`}
                   ref={(el) => trackButtonRefs.current[key] = el}
                 >
