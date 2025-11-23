@@ -42,60 +42,62 @@ export function MiniPlayer({
   
   return (
     <div className="relative">
-      {!isExpanded ? (
-        // Collapsed state - стеклянная капсула
-        <div
-          className="overflow-hidden rounded-full shadow-lg backdrop-blur-xl border border-white/30"
-          style={{
-            background: 'rgba(255, 255, 255, 0.1)',
-            maxWidth: '260px',
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
-          }}
-        >
-          <div className="flex items-center gap-3 px-4 py-3">
-            {/* Кнопка Play/Pause в круге слева */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                togglePlayPause(e);
-              }}
-              className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 hover:bg-white/20 transition-colors border border-white/20"
-              style={{
-                background: 'rgba(255, 255, 255, 0.1)',
-                boxShadow: '0 4px 16px rgba(0, 0, 0, 0.2)',
-              }}
-            >
-              {isPlaying ? (
-                <Pause className="w-5 h-5 text-white" fill="white" />
-              ) : (
-                <Play className="w-5 h-5 text-white translate-x-[1px]" fill="white" />
-              )}
-            </button>
-            
-            {/* Название по центру с подзаголовком */}
-            <button
-              onClick={onExpandToggle}
-              className="flex-1 text-left"
-            >
-              <div className="text-white drop-shadow-lg">
-                {isPlaying ? tracks[selectedTrack].name : 'Пауза в пути'}
-              </div>
-              <div className="text-white/60 text-sm">
-                {isPlaying ? tracks[selectedTrack].subtitle : 'практики'}
-              </div>
-            </button>
-            
-            {/* Стрелочка вниз справа */}
-            <button
-              onClick={onExpandToggle}
-              className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors"
-            >
-              <ChevronDown className="w-5 h-5 text-white/70" />
-            </button>
-          </div>
+      {/* Collapsed state - стеклянная капсула (всегда рендерится для сохранения места) */}
+      <div
+        className={`overflow-hidden rounded-full shadow-lg backdrop-blur-xl border border-white/30 transition-opacity ${
+          isExpanded ? 'opacity-0 pointer-events-none' : 'opacity-100'
+        }`}
+        style={{
+          background: 'rgba(255, 255, 255, 0.1)',
+          maxWidth: '260px',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+        }}
+      >
+        <div className="flex items-center gap-3 px-4 py-3">
+          {/* Кнопка Play/Pause в круге слева */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              togglePlayPause(e);
+            }}
+            className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 hover:bg-white/20 transition-colors border border-white/20"
+            style={{
+              background: 'rgba(255, 255, 255, 0.1)',
+              boxShadow: '0 4px 16px rgba(0, 0, 0, 0.2)',
+            }}
+          >
+            {isPlaying ? (
+              <Pause className="w-5 h-5 text-white" fill="white" />
+            ) : (
+              <Play className="w-5 h-5 text-white translate-x-[1px]" fill="white" />
+            )}
+          </button>
+          
+          {/* Название по центру с подзаголовком */}
+          <button
+            onClick={onExpandToggle}
+            className="flex-1 text-left"
+          >
+            <div className="text-white drop-shadow-lg">
+              {isPlaying ? tracks[selectedTrack].name : 'Пауза в пути'}
+            </div>
+            <div className="text-white/60 text-sm">
+              {isPlaying ? tracks[selectedTrack].subtitle : 'практики'}
+            </div>
+          </button>
+          
+          {/* Стрелочка вниз справа */}
+          <button
+            onClick={onExpandToggle}
+            className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors"
+          >
+            <ChevronDown className="w-5 h-5 text-white/70" />
+          </button>
         </div>
-      ) : (
-        // Expanded state - полная панель поверх всего
+      </div>
+
+      {/* Expanded state - полная панель поверх всего */}
+      {isExpanded && (
         <div 
           className="absolute top-0 left-0 z-50 overflow-hidden rounded-3xl shadow-2xl backdrop-blur-xl border border-white/30"
           style={{
@@ -117,26 +119,35 @@ export function MiniPlayer({
           </div>
           
           {/* Track cards */}
-          <div className="flex gap-2 mb-6 overflow-x-auto pb-2 scrollbar-hide px-4">
-            {trackKeys.map((key) => (
-              <button
-                key={key}
-                onClick={() => onTrackChange(key)}
-                className={`flex items-center gap-3 px-5 py-4 rounded-xl transition-all flex-shrink-0 border ${ 
-                  selectedTrack === key 
-                    ? 'bg-transparent border-white/40' 
-                    : 'bg-transparent border-white/10 hover:border-white/20'
-                }`}
-              >
-                <div className="flex items-center justify-center flex-shrink-0">
-                  {iconMap[key]}
-                </div>
-                <div className="text-left">
-                  <div className="text-sm text-white/90 whitespace-nowrap">{tracks[key].name}</div>
-                  <div className="text-xs text-white/50 whitespace-nowrap">{tracks[key].subtitle}</div>
-                </div>
-              </button>
-            ))}
+          <div className="relative mb-6">
+            <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide px-4 pr-8">
+              {trackKeys.map((key) => (
+                <button
+                  key={key}
+                  onClick={() => onTrackChange(key)}
+                  className={`flex items-center gap-3 px-5 py-4 rounded-xl transition-all flex-shrink-0 border ${ 
+                    selectedTrack === key 
+                      ? 'bg-transparent border-white/40' 
+                      : 'bg-transparent border-white/10 hover:border-white/20'
+                  }`}
+                >
+                  <div className="flex items-center justify-center flex-shrink-0">
+                    {iconMap[key]}
+                  </div>
+                  <div className="text-left">
+                    <div className="text-sm text-white/90 whitespace-nowrap">{tracks[key].name}</div>
+                    <div className="text-xs text-white/50 whitespace-nowrap">{tracks[key].subtitle}</div>
+                  </div>
+                </button>
+              ))}
+            </div>
+            {/* Gradient fade indicator на правом краю */}
+            <div 
+              className="absolute top-0 right-0 h-full w-12 pointer-events-none"
+              style={{
+                background: 'linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1) 70%)'
+              }}
+            />
           </div>
           
           {/* Плеер */}
