@@ -99,10 +99,10 @@ export function MiniPlayer({
             onClick={onExpandToggle}
             className="flex-1 text-left"
           >
-            <div className="text-white">
+            <div className="text-white truncate">
               {isPlaying ? tracks[selectedTrack].name : 'Пауза в пути'}
             </div>
-            <div className="text-white/40 text-sm">
+            <div className="text-white/50 text-xs">
               {isPlaying ? tracks[selectedTrack].subtitle : 'Практики'}
             </div>
           </button>

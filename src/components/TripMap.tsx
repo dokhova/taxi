@@ -1,6 +1,6 @@
 import { MapPin } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
-import carTopView from "figma:asset/c320f1901adf0237bb34f9d14450c9679cef5c95.png";
+import carTopView from "figma:asset/0598746954d0c1af8802d777672a80f19cf3aa28.png";
 
 export function TripMap() {
   return (
