@@ -29,11 +29,7 @@ export function TripMap() {
       {/* Car position (current location) */}
       <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
         <div className="relative">
-          <ImageWithFallback
-            src={carTopView}
-            alt="Car top view"
-            className="w-12 h-12 object-contain drop-shadow-lg"
-          />
+          {/* Car icon removed */}
         </div>
       </div>
     </div>
