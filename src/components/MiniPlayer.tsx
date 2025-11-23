@@ -1,4 +1,5 @@
 import { Play, Pause, ChevronDown, ChevronUp, SkipBack, SkipForward, Car, Leaf, Waves } from "lucide-react";
+import { useRef, useEffect } from "react";
 
 interface MiniPlayerProps {
   isPlaying: boolean;
@@ -32,6 +33,29 @@ export function MiniPlayer({
   tracks 
 }: MiniPlayerProps) {
   const trackKeys = Object.keys(tracks);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const trackButtonRefs = useRef<{ [key: string]: HTMLButtonElement | null }>({});
+  
+  // Автоскролл к выбранной карточке
+  useEffect(() => {
+    if (isExpanded && scrollContainerRef.current && trackButtonRefs.current[selectedTrack]) {
+      const container = scrollContainerRef.current;
+      const selectedButton = trackButtonRefs.current[selectedTrack];
+      
+      if (selectedButton) {
+        const containerRect = container.getBoundingClientRect();
+        const buttonRect = selectedButton.getBoundingClientRect();
+        
+        // Вычисляем нужный scroll offset для центрирования кнопки
+        const scrollLeft = selectedButton.offsetLeft - (container.offsetWidth / 2) + (selectedButton.offsetWidth / 2);
+        
+        container.scrollTo({
+          left: scrollLeft,
+          behavior: 'smooth'
+        });
+      }
+    }
+  }, [selectedTrack, isExpanded]);
   
   // Маппинг иконок
   const iconMap: { [key: string]: JSX.Element } = {
@@ -44,13 +68,14 @@ export function MiniPlayer({
     <div className="relative">
       {/* Collapsed state - стеклянная капсула (всегда рендерится для сохранения места) */}
       <div
-        className={`overflow-hidden rounded-full shadow-lg backdrop-blur-xl border border-white/30 transition-opacity ${
+        className={`overflow-hidden rounded-2xl shadow-lg border backdrop-blur-xl transition-opacity mt-2 ${
           isExpanded ? 'opacity-0 pointer-events-none' : 'opacity-100'
         }`}
         style={{
           background: 'rgba(255, 255, 255, 0.1)',
+          borderColor: 'rgba(255, 255, 255, 0.05)',
           maxWidth: '260px',
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+          boxShadow: '0 4px 16px rgba(0, 0, 0, 0.4)',
         }}
       >
         <div className="flex items-center gap-3 px-4 py-3">
@@ -60,10 +85,9 @@ export function MiniPlayer({
               e.stopPropagation();
               togglePlayPause(e);
             }}
-            className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 hover:bg-white/20 transition-colors border border-white/20"
+            className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 hover:bg-white/10 transition-colors"
             style={{
               background: 'rgba(255, 255, 255, 0.1)',
-              boxShadow: '0 4px 16px rgba(0, 0, 0, 0.2)',
             }}
           >
             {isPlaying ? (
@@ -78,10 +102,10 @@ export function MiniPlayer({
             onClick={onExpandToggle}
             className="flex-1 text-left"
           >
-            <div className="text-white drop-shadow-lg">
+            <div className="text-white">
               {isPlaying ? tracks[selectedTrack].name : 'Пауза в пути'}
             </div>
-            <div className="text-white/60 text-sm">
+            <div className="text-white/40 text-sm">
               {isPlaying ? tracks[selectedTrack].subtitle : 'практики'}
             </div>
           </button>
@@ -91,7 +115,7 @@ export function MiniPlayer({
             onClick={onExpandToggle}
             className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors"
           >
-            <ChevronDown className="w-5 h-5 text-white/70" />
+            <ChevronDown className="w-5 h-5 text-white/50" />
           </button>
         </div>
       </div>
@@ -120,7 +144,7 @@ export function MiniPlayer({
           
           {/* Track cards */}
           <div className="relative mb-6">
-            <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide px-4 pr-8">
+            <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide px-4 pr-8" ref={scrollContainerRef}>
               {trackKeys.map((key) => (
                 <button
                   key={key}
@@ -130,6 +154,7 @@ export function MiniPlayer({
                       ? 'bg-transparent border-white/40' 
                       : 'bg-transparent border-white/10 hover:border-white/20'
                   }`}
+                  ref={(el) => trackButtonRefs.current[key] = el}
                 >
                   <div className="flex items-center justify-center flex-shrink-0">
                     {iconMap[key]}
@@ -170,7 +195,7 @@ export function MiniPlayer({
               </div>
             </div>
             
-            {/* Кнопки управления */}
+            {/* Кнопки правления */}
             <div className="flex items-center justify-center gap-8">
               <button
                 className="text-white/60 hover:text-white/90 transition-colors"
