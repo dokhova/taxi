@@ -68,13 +68,13 @@ export function MiniPlayer({
     <div className="relative">
       {/* Collapsed state - стеклянная капсула (всегда рендерится для сохранения места) */}
       <div
-        className={`rounded-2xl backdrop-blur-sm transition-opacity mt-[10px] ${
+        className={`rounded-2xl backdrop-blur-sm transition-opacity mt-[24px] ${
           isExpanded ? 'opacity-0 pointer-events-none' : 'opacity-100'
         }`}
         style={{
           maxWidth: '220px',
-          background: 'linear-gradient(135deg, #a8d531, #6ab43e)',
-          boxShadow: '0 4px 20px rgba(168, 213, 49, 0.3)',
+          background: 'linear-gradient(100deg, #A8D531 0%, #34A853 100%)',
+          boxShadow: '0 2px 12px 0 rgba(168, 213, 49, 0.15)',
         }}
       >
         <div className="flex items-center gap-2 px-3 py-2">
@@ -125,8 +125,8 @@ export function MiniPlayer({
           className="absolute top-0 left-0 z-50 rounded-2xl backdrop-blur-sm"
           style={{
             maxWidth: '220px',
-            background: 'linear-gradient(135deg, #a8d531, #6ab43e)',
-            boxShadow: '0 4px 20px rgba(168, 213, 49, 0.3)',
+            background: 'linear-gradient(100deg, #A8D531 0%, #34A853 100%)',
+            boxShadow: '0 2px 12px 0 rgba(168, 213, 49, 0.15)',
           }}
         >
           {/* Header */}
