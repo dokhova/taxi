@@ -68,11 +68,13 @@ export function MiniPlayer({
     <div className="relative">
       {/* Collapsed state - стеклянная капсула (всегда рендерится для сохранения места) */}
       <div
-        className={`bg-white/5 rounded-2xl border border-white/10 backdrop-blur-sm transition-opacity mt-[10px] ${
+        className={`rounded-2xl backdrop-blur-sm transition-opacity mt-[10px] ${
           isExpanded ? 'opacity-0 pointer-events-none' : 'opacity-100'
         }`}
         style={{
           maxWidth: '220px',
+          background: 'linear-gradient(135deg, #a8d531, #6ab43e)',
+          boxShadow: '0 4px 20px rgba(168, 213, 49, 0.3)',
         }}
       >
         <div className="flex items-center gap-2 px-3 py-2">
@@ -82,9 +84,9 @@ export function MiniPlayer({
               e.stopPropagation();
               togglePlayPause(e);
             }}
-            className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 hover:bg-white/15 transition-colors"
+            className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 hover:bg-white/20 transition-colors"
             style={{
-              background: 'rgba(255, 255, 255, 0.1)',
+              background: 'rgba(255, 255, 255, 0.2)',
             }}
           >
             {isPlaying ? (
@@ -99,10 +101,10 @@ export function MiniPlayer({
             onClick={onExpandToggle}
             className="flex-1 text-left"
           >
-            <div className="text-white truncate text-sm">
+            <div className="text-white font-medium truncate text-sm">
               {isPlaying ? tracks[selectedTrack].name : 'Пауза в пути'}
             </div>
-            <div className="text-white/50 text-xs">
+            <div className="text-white/70 text-xs">
               {isPlaying ? tracks[selectedTrack].subtitle : 'Практики'}
             </div>
           </button>
@@ -110,9 +112,9 @@ export function MiniPlayer({
           {/* Стрелочка вниз справа */}
           <button
             onClick={onExpandToggle}
-            className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors"
+            className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center hover:bg-white/15 transition-colors"
           >
-            <ChevronDown className="w-4 h-4 text-white/50" />
+            <ChevronDown className="w-4 h-4 text-white/80" />
           </button>
         </div>
       </div>
@@ -120,20 +122,22 @@ export function MiniPlayer({
       {/* Expanded state - полная панель поверх всего */}
       {isExpanded && (
         <div 
-          className="absolute top-0 left-0 z-50 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-sm"
+          className="absolute top-0 left-0 z-50 rounded-2xl backdrop-blur-sm"
           style={{
             maxWidth: '220px',
+            background: 'linear-gradient(135deg, #a8d531, #6ab43e)',
+            boxShadow: '0 4px 20px rgba(168, 213, 49, 0.3)',
           }}
         >
           {/* Header */}
           <div className="flex items-center gap-2 px-3 py-2">
             <div className="w-9 h-9 flex-shrink-0" /> {/* Spacer for alignment */}
-            <h3 className="flex-1 text-white/90 text-sm -ml-[44px]">{tracks[selectedTrack].name}</h3>
+            <h3 className="flex-1 text-white font-medium text-sm -ml-[44px]">{tracks[selectedTrack].name}</h3>
             <button
               onClick={onExpandToggle}
-              className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors"
+              className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center hover:bg-white/15 transition-colors"
             >
-              <ChevronUp className="w-4 h-4 text-white/70" />
+              <ChevronUp className="w-4 h-4 text-white/80" />
             </button>
           </div>
           
@@ -146,8 +150,8 @@ export function MiniPlayer({
                   onClick={() => onTrackChange(key)}
                   className={`flex items-center gap-2 px-3 py-2 rounded-xl transition-all flex-shrink-0 border shadow-none ${ 
                     selectedTrack === key 
-                      ? 'bg-transparent border-white/20' 
-                      : 'bg-transparent border-white/5 hover:border-white/15'
+                      ? 'bg-white/20 border-white/30' 
+                      : 'bg-white/10 border-white/15 hover:border-white/25'
                   }`}
                   ref={(el) => trackButtonRefs.current[key] = el}
                 >
@@ -155,8 +159,8 @@ export function MiniPlayer({
                     {iconMap[key]}
                   </div>
                   <div className="text-left">
-                    <div className="text-xs text-white/90 whitespace-nowrap">{tracks[key].name}</div>
-                    <div className="text-[10px] text-white/50 whitespace-nowrap">{tracks[key].subtitle}</div>
+                    <div className="text-xs text-white whitespace-nowrap">{tracks[key].name}</div>
+                    <div className="text-[10px] text-white/70 whitespace-nowrap">{tracks[key].subtitle}</div>
                   </div>
                 </button>
               ))}
@@ -171,15 +175,16 @@ export function MiniPlayer({
             <div className="mb-3">
               <div className="h-1 bg-white/20 rounded-full overflow-hidden mb-1.5">
                 <div 
-                  className="h-full bg-[#34AB53] rounded-full transition-all"
+                  className="h-full rounded-full transition-all"
                   style={{
                     width: audioRef.current?.duration 
                       ? `${(currentTime / audioRef.current.duration) * 100}%` 
-                      : '0%'
+                      : '0%',
+                    background: 'rgba(255, 255, 255, 0.6)',
                   }}
                 />
               </div>
-              <div className="flex justify-between text-[10px] text-white/40">
+              <div className="flex justify-between text-[10px] text-white/60">
                 <span>{formatTime(currentTime)}</span>
                 <span>{audioRef.current?.duration ? formatTime(audioRef.current.duration) : '0:00'}</span>
               </div>
@@ -188,7 +193,7 @@ export function MiniPlayer({
             {/* Кнопки правления */}
             <div className="flex items-center justify-center gap-6">
               <button
-                className="text-white/60 hover:text-white/90 transition-colors"
+                className="text-white/70 hover:text-white transition-colors"
                 onClick={() => {
                   const currentIndex = trackKeys.indexOf(selectedTrack);
                   const prevIndex = currentIndex > 0 ? currentIndex - 1 : trackKeys.length - 1;
@@ -200,7 +205,10 @@ export function MiniPlayer({
               
               <button
                 onClick={togglePlayPause}
-                className="w-11 h-11 bg-[#34AB53] hover:bg-[#3ec05f] rounded-full flex items-center justify-center transition-all shadow-lg"
+                className="w-11 h-11 rounded-full flex items-center justify-center transition-all shadow-lg hover:bg-white/30"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.25)',
+                }}
               >
                 {isPlaying ? (
                   <Pause className="w-5 h-5 text-white" fill="white" />
@@ -210,7 +218,7 @@ export function MiniPlayer({
               </button>
               
               <button
-                className="text-white/60 hover:text-white/90 transition-colors"
+                className="text-white/70 hover:text-white transition-colors"
                 onClick={() => {
                   const currentIndex = trackKeys.indexOf(selectedTrack);
                   const nextIndex = currentIndex < trackKeys.length - 1 ? currentIndex + 1 : 0;
