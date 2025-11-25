@@ -59,9 +59,9 @@ export function MiniPlayer({
   
   // Маппинг иконок
   const iconMap: { [key: string]: JSX.Element } = {
-    meditation: <Car className="w-5 h-5" strokeWidth={1.5} style={{ color: 'rgba(25, 25, 27, 0.7)' }} />,
-    ambient: <Waves className="w-5 h-5" strokeWidth={1.5} style={{ color: 'rgba(25, 25, 27, 0.7)' }} />,
-    nature: <Leaf className="w-5 h-5" strokeWidth={1.5} style={{ color: 'rgba(25, 25, 27, 0.7)' }} />,
+    meditation: <Car className="w-5 h-5 text-white" strokeWidth={1.5} />,
+    ambient: <Waves className="w-5 h-5 text-white" strokeWidth={1.5} />,
+    nature: <Leaf className="w-5 h-5 text-white" strokeWidth={1.5} />,
   };
   
   return (
@@ -73,7 +73,7 @@ export function MiniPlayer({
         }`}
         style={{
           maxWidth: '220px',
-          background: 'linear-gradient(100deg, #A8D531 0%, #34A853 100%)',
+          background: 'linear-gradient(100deg, #34A853 0%, #34A853 50%, #A8D531 100%)',
           boxShadow: '0 2px 12px 0 rgba(168, 213, 49, 0.15)',
         }}
       >
@@ -101,10 +101,10 @@ export function MiniPlayer({
             onClick={onExpandToggle}
             className="flex-1 text-left"
           >
-            <div className="font-medium truncate text-sm" style={{ color: 'rgba(25, 25, 27, 0.85)' }}>
+            <div className="text-white font-medium truncate text-sm">
               {isPlaying ? tracks[selectedTrack].name : 'Пауза в пути'}
             </div>
-            <div className="text-xs" style={{ color: 'rgba(25, 25, 27, 0.6)' }}>
+            <div className="text-white/70 text-xs">
               {isPlaying ? tracks[selectedTrack].subtitle : 'Практики'}
             </div>
           </button>
@@ -125,7 +125,7 @@ export function MiniPlayer({
           className="absolute top-0 left-0 z-50 rounded-2xl backdrop-blur-sm"
           style={{
             maxWidth: '220px',
-            background: 'linear-gradient(100deg, #A8D531 0%, #34A853 100%)',
+            background: 'linear-gradient(100deg, #34A853 0%, #34A853 50%, #A8D531 100%)',
             boxShadow: '0 2px 12px 0 rgba(168, 213, 49, 0.15)',
           }}
         >
@@ -155,8 +155,8 @@ export function MiniPlayer({
                   }`}
                   style={{
                     background: selectedTrack === key 
-                      ? 'rgba(255, 255, 255, 0.35)' 
-                      : 'rgba(255, 255, 255, 0.25)',
+                      ? 'rgba(255, 255, 255, 0.20)' 
+                      : 'rgba(255, 255, 255, 0.15)',
                     backdropFilter: 'blur(8px)',
                   }}
                   ref={(el) => trackButtonRefs.current[key] = el}
@@ -165,8 +165,8 @@ export function MiniPlayer({
                     {iconMap[key]}
                   </div>
                   <div className="text-left">
-                    <div className="text-xs font-medium whitespace-nowrap" style={{ color: 'rgba(25, 25, 27, 0.85)' }}>{tracks[key].name}</div>
-                    <div className="text-[10px] whitespace-nowrap" style={{ color: 'rgba(25, 25, 27, 0.6)' }}>{tracks[key].subtitle}</div>
+                    <div className="text-xs font-medium text-white whitespace-nowrap">{tracks[key].name}</div>
+                    <div className="text-[10px] text-white/70 whitespace-nowrap">{tracks[key].subtitle}</div>
                   </div>
                 </button>
               ))}
