@@ -59,9 +59,9 @@ export function MiniPlayer({
   
   // Маппинг иконок
   const iconMap: { [key: string]: JSX.Element } = {
-    meditation: <Car className="w-5 h-5" strokeWidth={1.5} style={{ color: 'rgba(0, 0, 0, 0.7)' }} />,
-    ambient: <Waves className="w-5 h-5" strokeWidth={1.5} style={{ color: 'rgba(0, 0, 0, 0.7)' }} />,
-    nature: <Leaf className="w-5 h-5" strokeWidth={1.5} style={{ color: 'rgba(0, 0, 0, 0.7)' }} />,
+    meditation: <Car className="w-5 h-5" strokeWidth={1.5} style={{ color: 'rgba(25, 25, 27, 0.7)' }} />,
+    ambient: <Waves className="w-5 h-5" strokeWidth={1.5} style={{ color: 'rgba(25, 25, 27, 0.7)' }} />,
+    nature: <Leaf className="w-5 h-5" strokeWidth={1.5} style={{ color: 'rgba(25, 25, 27, 0.7)' }} />,
   };
   
   return (
@@ -90,9 +90,9 @@ export function MiniPlayer({
             }}
           >
             {isPlaying ? (
-              <Pause className="w-4 h-4" fill="rgba(0, 0, 0, 0.7)" style={{ color: 'rgba(0, 0, 0, 0.7)' }} />
+              <Pause className="w-4 h-4 text-white" fill="white" />
             ) : (
-              <Play className="w-4 h-4 translate-x-[1px]" fill="rgba(0, 0, 0, 0.7)" style={{ color: 'rgba(0, 0, 0, 0.7)' }} />
+              <Play className="w-4 h-4 text-white translate-x-[1px]" fill="white" />
             )}
           </button>
           
@@ -101,10 +101,10 @@ export function MiniPlayer({
             onClick={onExpandToggle}
             className="flex-1 text-left"
           >
-            <div className="font-medium truncate text-sm" style={{ color: 'rgba(0, 0, 0, 0.75)' }}>
+            <div className="font-medium truncate text-sm" style={{ color: 'rgba(25, 25, 27, 0.85)' }}>
               {isPlaying ? tracks[selectedTrack].name : 'Пауза в пути'}
             </div>
-            <div className="text-xs" style={{ color: 'rgba(0, 0, 0, 0.55)' }}>
+            <div className="text-xs" style={{ color: 'rgba(25, 25, 27, 0.6)' }}>
               {isPlaying ? tracks[selectedTrack].subtitle : 'Практики'}
             </div>
           </button>
@@ -114,7 +114,7 @@ export function MiniPlayer({
             onClick={onExpandToggle}
             className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center hover:bg-white/15 transition-colors"
           >
-            <ChevronDown className="w-4 h-4" style={{ color: 'rgba(0, 0, 0, 0.6)' }} />
+            <ChevronDown className="w-4 h-4 text-white/80" />
           </button>
         </div>
       </div>
@@ -132,12 +132,12 @@ export function MiniPlayer({
           {/* Header */}
           <div className="flex items-center gap-2 px-3 py-2">
             <div className="w-9 h-9 flex-shrink-0" /> {/* Spacer for alignment */}
-            <h3 className="flex-1 font-medium text-sm -ml-[44px]" style={{ color: 'rgba(0, 0, 0, 0.75)' }}>{tracks[selectedTrack].name}</h3>
+            <h3 className="flex-1 text-white font-medium text-sm -ml-[44px]">{tracks[selectedTrack].name}</h3>
             <button
               onClick={onExpandToggle}
               className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center hover:bg-white/15 transition-colors"
             >
-              <ChevronUp className="w-4 h-4" style={{ color: 'rgba(0, 0, 0, 0.6)' }} />
+              <ChevronUp className="w-4 h-4 text-white/80" />
             </button>
           </div>
           
@@ -162,13 +162,11 @@ export function MiniPlayer({
                   ref={(el) => trackButtonRefs.current[key] = el}
                 >
                   <div className="flex items-center justify-center flex-shrink-0">
-                    <div style={{ color: 'rgba(0, 0, 0, 0.7)' }}>
-                      {iconMap[key]}
-                    </div>
+                    {iconMap[key]}
                   </div>
                   <div className="text-left">
-                    <div className="text-xs font-medium whitespace-nowrap" style={{ color: 'rgba(0, 0, 0, 0.75)' }}>{tracks[key].name}</div>
-                    <div className="text-[10px] whitespace-nowrap" style={{ color: 'rgba(0, 0, 0, 0.55)' }}>{tracks[key].subtitle}</div>
+                    <div className="text-xs font-medium whitespace-nowrap" style={{ color: 'rgba(25, 25, 27, 0.85)' }}>{tracks[key].name}</div>
+                    <div className="text-[10px] whitespace-nowrap" style={{ color: 'rgba(25, 25, 27, 0.6)' }}>{tracks[key].subtitle}</div>
                   </div>
                 </button>
               ))}
@@ -192,7 +190,7 @@ export function MiniPlayer({
                   }}
                 />
               </div>
-              <div className="flex justify-between text-[10px]" style={{ color: 'rgba(0, 0, 0, 0.5)' }}>
+              <div className="flex justify-between text-[10px] text-white/60">
                 <span>{formatTime(currentTime)}</span>
                 <span>{audioRef.current?.duration ? formatTime(audioRef.current.duration) : '0:00'}</span>
               </div>
@@ -201,8 +199,7 @@ export function MiniPlayer({
             {/* Кнопки правления */}
             <div className="flex items-center justify-center gap-6">
               <button
-                className="transition-all hover:opacity-100"
-                style={{ color: 'rgba(0, 0, 0, 0.65)' }}
+                className="text-white/70 hover:text-white transition-colors"
                 onClick={() => {
                   const currentIndex = trackKeys.indexOf(selectedTrack);
                   const prevIndex = currentIndex > 0 ? currentIndex - 1 : trackKeys.length - 1;
@@ -220,15 +217,14 @@ export function MiniPlayer({
                 }}
               >
                 {isPlaying ? (
-                  <Pause className="w-5 h-5" fill="rgba(0, 0, 0, 0.7)" style={{ color: 'rgba(0, 0, 0, 0.7)' }} />
+                  <Pause className="w-5 h-5 text-white" fill="white" />
                 ) : (
-                  <Play className="w-5 h-5 translate-x-[1px]" fill="rgba(0, 0, 0, 0.7)" style={{ color: 'rgba(0, 0, 0, 0.7)' }} />
+                  <Play className="w-5 h-5 text-white translate-x-[1px]" fill="white" />
                 )}
               </button>
               
               <button
-                className="transition-all hover:opacity-100"
-                style={{ color: 'rgba(0, 0, 0, 0.65)' }}
+                className="text-white/70 hover:text-white transition-colors"
                 onClick={() => {
                   const currentIndex = trackKeys.indexOf(selectedTrack);
                   const nextIndex = currentIndex < trackKeys.length - 1 ? currentIndex + 1 : 0;
