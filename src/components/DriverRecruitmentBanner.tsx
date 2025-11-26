@@ -8,9 +8,9 @@ export function DriverRecruitmentBanner({ onClick }: DriverRecruitmentBannerProp
   return (
     <button 
       onClick={onClick} 
-      className="relative overflow-hidden rounded-2xl transition-all max-w-xs active:scale-[0.98] w-full bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10"
+      className="relative overflow-hidden rounded-2xl transition-all max-w-xs active:scale-[0.98] w-full bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 h-[56px]"
     >
-      <div className="flex items-center justify-between p-4">
+      <div className="flex items-center justify-between px-4 h-full">
         <div className="text-left">
           <h3 className="text-base text-white mb-0.5">
             Спокойный режим
@@ -21,7 +21,7 @@ export function DriverRecruitmentBanner({ onClick }: DriverRecruitmentBannerProp
         </div>
         
         {/* Arrow */}
-        <ChevronRight className="w-5 h-5 text-white/50 flex-shrink-0 ml-2" />
+        <ChevronRight className="w-5 h-5 text-white/50 flex-shrink-0" />
       </div>
     </button>
   );

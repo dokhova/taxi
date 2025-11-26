@@ -70,11 +70,11 @@ export function MiniPlayer({
     <div className="relative">
       {/* Collapsed state - стеклянная капсула (всегда рендерится для сохранения места) */}
       <div
-        className={`rounded-2xl backdrop-blur-sm transition-opacity mt-3 md:mt-[24px] ${
+        className={`rounded-2xl backdrop-blur-sm transition-opacity ${
           isExpanded ? 'opacity-0 pointer-events-none' : 'opacity-100'
         }`}
         style={{
-          maxWidth: '220px',
+          maxWidth: '180px',
           background: 'linear-gradient(100deg, #34A853 0%, #34A853 50%, #A8D531 100%)',
           boxShadow: '0 2px 12px 0 rgba(168, 213, 49, 0.15)',
         }}
@@ -101,13 +101,13 @@ export function MiniPlayer({
           {/* Название по центру с подзаголовком */}
           <button
             onClick={onExpandToggle}
-            className="flex-1 text-left"
+            className="flex-1 text-left min-w-0"
           >
             <div className="text-white font-medium truncate text-sm">
-              {isPlaying ? tracks[selectedTrack].name : t("pauseInMotion")}
+              {tracks[selectedTrack].name}
             </div>
-            <div className="text-white/70 text-xs">
-              {isPlaying ? tracks[selectedTrack].subtitle : t("practices")}
+            <div className="text-white/70 text-xs truncate">
+              {tracks[selectedTrack].subtitle}
             </div>
           </button>
           
@@ -126,7 +126,7 @@ export function MiniPlayer({
         <div 
           className="absolute top-0 left-0 z-50 rounded-2xl backdrop-blur-sm"
           style={{
-            maxWidth: '220px',
+            maxWidth: '180px',
             background: 'linear-gradient(100deg, #34A853 0%, #34A853 50%, #A8D531 100%)',
             boxShadow: '0 2px 12px 0 rgba(168, 213, 49, 0.15)',
           }}
@@ -134,7 +134,7 @@ export function MiniPlayer({
           {/* Header */}
           <div className="flex items-center gap-2 px-3 py-2">
             <div className="w-9 h-9 flex-shrink-0" /> {/* Spacer for alignment */}
-            <h3 className="flex-1 text-white font-medium text-sm -ml-[44px]">{tracks[selectedTrack].name}</h3>
+            <h3 className="text-white font-medium text-sm -ml-[44px] truncate flex-1">{tracks[selectedTrack].name}</h3>
             <button
               onClick={onExpandToggle}
               className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center hover:bg-white/15 transition-colors"

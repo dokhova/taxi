@@ -595,6 +595,10 @@
     height: calc(var(--spacing) * 20);
   }
 
+  .h-\[56px\] {
+    height: 56px;
+  }
+
   .h-\[400px\] {
     height: 400px;
   }

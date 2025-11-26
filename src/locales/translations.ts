@@ -20,7 +20,7 @@ export const translations = {
     meditation: "Meditation",
     
     // Tracks
-    silenceOnTheRoad: "Silence on the road",
+    silenceOnTheRoad: "Calm Ride",
     meditationSubtitle: "Meditation",
     softBackground: "Soft background",
     ambientSubtitle: "Ambient",
@@ -59,7 +59,7 @@ export const translations = {
     meditation: "Медитация",
     
     // Tracks
-    silenceOnTheRoad: "Тишина в пути",
+    silenceOnTheRoad: "Пауза в пути",
     meditationSubtitle: "Медитация",
     softBackground: "Мягкий фон",
     ambientSubtitle: "Амбиент",
