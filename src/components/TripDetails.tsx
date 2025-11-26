@@ -6,6 +6,7 @@ interface TripDetailsProps {
   estimatedTime: string;
   price: string;
   status: string;
+  t?: (key: string) => string;
 }
 
 export function TripDetails({
@@ -14,6 +15,7 @@ export function TripDetails({
   estimatedTime,
   price,
   status,
+  t = (key) => key,
 }: TripDetailsProps) {
   return (
     <div className="bg-white/5 rounded-2xl shadow-sm border border-white/10 p-5 backdrop-blur-sm">
@@ -37,7 +39,7 @@ export function TripDetails({
             <div className="w-0.5 h-8 bg-white/20 my-1"></div>
           </div>
           <div className="flex-1">
-            <p className="text-xs text-white/50 mb-1">Откуда</p>
+            <p className="text-xs text-white/50 mb-1">{t("pickup")}</p>
             <p className="text-sm text-white">{pickup}</p>
           </div>
         </div>
@@ -47,7 +49,7 @@ export function TripDetails({
             <MapPin className="w-3 h-3" style={{ color: '#E74639', fill: '#E74639' }} />
           </div>
           <div className="flex-1">
-            <p className="text-xs text-white/50 mb-1">Куда</p>
+            <p className="text-xs text-white/50 mb-1">{t("destination")}</p>
             <p className="text-sm text-white">{destination}</p>
           </div>
         </div>
@@ -58,7 +60,7 @@ export function TripDetails({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-white/80">
             <Wallet className="w-4 h-4" />
-            <span className="text-sm">Стоимость поездки</span>
+            <span className="text-sm">{t("tripCost")}</span>
           </div>
           <span className="text-lg text-white">{price} ₽</span>
         </div>

@@ -18,6 +18,7 @@ interface MiniPlayerProps {
       icon: string;
     };
   };
+  t?: (key: string) => string;
 }
 
 export function MiniPlayer({ 
@@ -30,7 +31,8 @@ export function MiniPlayer({
   onExpandToggle, 
   selectedTrack, 
   onTrackChange, 
-  tracks 
+  tracks,
+  t = (key) => key,
 }: MiniPlayerProps) {
   const trackKeys = Object.keys(tracks);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -68,7 +70,7 @@ export function MiniPlayer({
     <div className="relative">
       {/* Collapsed state - стеклянная капсула (всегда рендерится для сохранения места) */}
       <div
-        className={`rounded-2xl backdrop-blur-sm transition-opacity mt-[24px] ${
+        className={`rounded-2xl backdrop-blur-sm transition-opacity mt-3 md:mt-[24px] ${
           isExpanded ? 'opacity-0 pointer-events-none' : 'opacity-100'
         }`}
         style={{
@@ -102,10 +104,10 @@ export function MiniPlayer({
             className="flex-1 text-left"
           >
             <div className="text-white font-medium truncate text-sm">
-              {isPlaying ? tracks[selectedTrack].name : 'Пауза в пути'}
+              {isPlaying ? tracks[selectedTrack].name : t("pauseInMotion")}
             </div>
             <div className="text-white/70 text-xs">
-              {isPlaying ? tracks[selectedTrack].subtitle : 'Практики'}
+              {isPlaying ? tracks[selectedTrack].subtitle : t("practices")}
             </div>
           </button>
           

@@ -3,8 +3,10 @@ import { TripMap } from "./components/TripMap";
 import { TripDetails } from "./components/TripDetails";
 import { RelaxationModal } from "./components/RelaxationModal";
 import { MiniPlayer } from "./components/MiniPlayer";
-import { MoreVertical, Shield, ChevronRight, Play, Pause } from "lucide-react";
+import { MoreVertical, Shield, ChevronRight, Play, Pause, Globe } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
+import faviconImg from "figma:asset/58927ff4e7977a8aaf7b4dbcd3c9164adf40c2be.png";
+import { translations, Language } from "./locales/translations";
 
 export default function App() {
   const [isRelaxationModalOpen, setIsRelaxationModalOpen] = useState(false);
@@ -12,24 +14,39 @@ export default function App() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [selectedTrack, setSelectedTrack] = useState<string>("meditation");
+  const [language, setLanguage] = useState<Language>("ru");
   const audioRef = useRef<HTMLAudioElement>(null);
+
+  const t = (key: keyof typeof translations.en) => translations[language][key];
+
+  // Set page title and favicon
+  useEffect(() => {
+    document.title = "Ride Spokspace";
+    
+    // Set favicon
+    const link = document.querySelector("link[rel*='icon']") || document.createElement('link');
+    link.type = 'image/png';
+    link.rel = 'icon';
+    link.href = faviconImg;
+    document.getElementsByTagName('head')[0].appendChild(link);
+  }, []);
 
   const tracks = {
     meditation: {
-      name: "Тишина в пути",
-      subtitle: "Медитация",
+      name: t("silenceOnTheRoad"),
+      subtitle: t("meditationSubtitle"),
       icon: "meditation",
-      src: "/mp3/pause_ru.mp3",
+      src: language === "ru" ? "/mp3/pause_ru.mp3" : "/mp3/pause_en.mp3",
     },
     ambient: {
-      name: "Мягкий фон",
-      subtitle: "Амбиент",
+      name: t("softBackground"),
+      subtitle: t("ambientSubtitle"),
       icon: "ambient",
       src: "/mp3/ambient.mp3",
     },
     nature: {
-      name: "Звук природы",
-      subtitle: "Природа",
+      name: t("natureSound"),
+      subtitle: t("natureSubtitle"),
       icon: "nature",
       src: "/mp3/nature.mp3",
     },
@@ -37,18 +54,18 @@ export default function App() {
 
   const tripData = {
     driver: {
-      name: "Александр П.",
+      name: language === "ru" ? "Александр" : "Alexander",
       rating: 4.9,
       photoUrl: "https://images.unsplash.com/photo-1640658506905-351be27a1c14?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBkcml2ZXIlMjBwb3J0cmFpdCUyMG1hbnxlbnwxfHx8fDE3NjM2MzAwMzZ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
       carModel: "Toyota Camry",
       carNumber: "А123ВС 77",
-      carColor: "Черный",
+      carColor: t("black"),
     },
-    pickup: "ул. Тверская, 12",
-    destination: "Аэропорт Шереметьево, Терминал D",
-    estimatedTime: "12 мин",
+    pickup: language === "ru" ? "ул. Тверская, 12" : "12 Tverskaya St",
+    destination: language === "ru" ? "Аэропорт Шереметьево, Терминал D" : "Sheremetyevo Airport, Terminal D",
+    estimatedTime: language === "ru" ? "12 мин" : "12 min",
     price: "1 250",
-    status: "В пути",
+    status: t("inProgress"),
   };
 
   useEffect(() => {
@@ -92,7 +109,7 @@ export default function App() {
         });
       }
     }
-  }, [selectedTrack]);
+  }, [selectedTrack, language]);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -118,20 +135,32 @@ export default function App() {
       </div>
 
       {/* Main content */}
-      <div className="max-w-2xl mx-auto p-4 space-y-4 relative z-10">
-        {/* Mini Player */}
-        <MiniPlayer
-          isPlaying={isPlaying}
-          currentTime={currentTime}
-          togglePlayPause={togglePlayPause}
-          formatTime={formatTime}
-          audioRef={audioRef}
-          isExpanded={isRelaxationExpanded}
-          onExpandToggle={() => setIsRelaxationExpanded(!isRelaxationExpanded)}
-          selectedTrack={selectedTrack}
-          onTrackChange={setSelectedTrack}
-          tracks={tracks}
-        />
+      <div className="max-w-2xl mx-auto p-4 space-y-3 md:space-y-4 relative z-10">
+        {/* Mini Player with Language Switcher */}
+        <div className="flex items-start justify-between gap-4">
+          <MiniPlayer
+            isPlaying={isPlaying}
+            currentTime={currentTime}
+            togglePlayPause={togglePlayPause}
+            formatTime={formatTime}
+            audioRef={audioRef}
+            isExpanded={isRelaxationExpanded}
+            onExpandToggle={() => setIsRelaxationExpanded(!isRelaxationExpanded)}
+            selectedTrack={selectedTrack}
+            onTrackChange={setSelectedTrack}
+            tracks={tracks}
+            t={t}
+          />
+          
+          {/* Language Switcher */}
+          <button
+            onClick={() => setLanguage(language === "ru" ? "en" : "ru")}
+            className="flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl px-4 py-2 transition-colors mt-3 md:mt-[24px]"
+          >
+            <Globe className="w-4 h-4 text-white/70" />
+            <span className="text-sm text-white/90">{language === "ru" ? "EN" : "RU"}</span>
+          </button>
+        </div>
 
         {/* Map */}
         <TripMap />
@@ -153,12 +182,13 @@ export default function App() {
           estimatedTime={tripData.estimatedTime}
           price={tripData.price}
           status={tripData.status}
+          t={t}
         />
 
         {/* Safety button */}
         <button className="w-full bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl p-4 flex items-center justify-center gap-2 transition-colors">
           <Shield className="w-5 h-5" style={{ color: '#4285F4' }} />
-          <span className="text-sm text-white/90">Безопасность поездки</span>
+          <span className="text-sm text-white/90">{t("tripSafety")}</span>
         </button>
 
         {/* Relaxation modal */}
