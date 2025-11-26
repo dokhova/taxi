@@ -24,7 +24,7 @@ export const translations = {
     meditationSubtitle: "Meditation",
     softBackground: "Soft background",
     ambientSubtitle: "Ambient",
-    natureSound: "Nature sound",
+    natureSound: "Nature Song",
     natureSubtitle: "Melody",
     
     // Driver
