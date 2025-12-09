@@ -157,8 +157,8 @@ export default function App() {
             onClick={() => setLanguage(language === "ru" ? "en" : "ru")}
             className="flex items-center gap-2 rounded-xl px-3 py-3 transition-colors flex-shrink-0 h-[64px] hover:bg-white/5"
           >
-            <Globe className="w-4 h-4 text-white/70" />
-            <span className="text-sm text-white/90">{language === "ru" ? "RU" : "EN"}</span>
+            <Globe className="w-4 h-4 text-white/50" />
+            <span className="text-sm text-white/50">{language === "ru" ? "EN" : "RU"}</span>
           </button>
         </div>
 
