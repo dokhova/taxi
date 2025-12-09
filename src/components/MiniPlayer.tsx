@@ -68,27 +68,28 @@ export function MiniPlayer({
   
   return (
     <div className="relative">
-      {/* Collapsed state - стеклянная капсула (всегда рендерится для сохранения места) */}
+      {/* Collapsed state - компактная кнопка */}
       <div
-        className={`rounded-2xl backdrop-blur-sm transition-opacity ${
-          isExpanded ? 'opacity-0 pointer-events-none' : 'opacity-100'
+        className={`rounded-2xl backdrop-blur-sm border transition-all duration-300 ${ 
+          isExpanded ? 'opacity-0 pointer-events-none scale-95' : 'opacity-100 scale-100'
         }`}
         style={{
-          maxWidth: '180px',
-          background: 'linear-gradient(100deg, #34A853 0%, #34A853 50%, #A8D531 100%)',
-          boxShadow: '0 2px 12px 0 rgba(168, 213, 49, 0.15)',
+          width: '220px',
+          height: '64px',
+          background: 'rgba(255, 255, 255, 0.03)',
+          borderColor: 'rgba(255, 255, 255, 0.08)',
         }}
       >
-        <div className="flex items-center gap-2 px-3 py-2">
-          {/* Кнопка Play/Pause в круге слева */}
+        <div className="flex items-center gap-3 px-3 h-full">
+          {/* Кнопка Play/Pause в круге слева с градиентом */}
           <button
             onClick={(e) => {
               e.stopPropagation();
               togglePlayPause(e);
             }}
-            className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 hover:bg-white/20 transition-colors"
+            className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 hover:opacity-90 transition-opacity"
             style={{
-              background: 'rgba(255, 255, 255, 0.2)',
+              background: 'linear-gradient(100deg, #A8D531 0%, #34A853 100%)',
             }}
           >
             {isPlaying ? (
@@ -103,10 +104,10 @@ export function MiniPlayer({
             onClick={onExpandToggle}
             className="flex-1 text-left min-w-0"
           >
-            <div className="text-white font-medium truncate text-sm">
+            <div className="text-white font-medium truncate">
               {tracks[selectedTrack].name}
             </div>
-            <div className="text-white/70 text-xs truncate">
+            <div className="text-white/60 text-sm truncate">
               {tracks[selectedTrack].subtitle}
             </div>
           </button>
@@ -114,131 +115,133 @@ export function MiniPlayer({
           {/* Стрелочка вниз справа */}
           <button
             onClick={onExpandToggle}
-            className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center hover:bg-white/15 transition-colors"
+            className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors"
           >
-            <ChevronDown className="w-4 h-4 text-white/80" />
+            <ChevronDown className="w-5 h-5 text-white/60" />
           </button>
         </div>
       </div>
 
       {/* Expanded state - полная панель поверх всего */}
-      {isExpanded && (
-        <div 
-          className="absolute top-0 left-0 z-50 rounded-2xl backdrop-blur-sm"
-          style={{
-            maxWidth: '180px',
-            background: 'linear-gradient(100deg, #34A853 0%, #34A853 50%, #A8D531 100%)',
-            boxShadow: '0 2px 12px 0 rgba(168, 213, 49, 0.15)',
-          }}
-        >
-          {/* Header */}
-          <div className="flex items-center gap-2 px-3 py-2">
-            <div className="w-9 h-9 flex-shrink-0" /> {/* Spacer for alignment */}
-            <h3 className="text-white font-medium text-sm -ml-[44px] truncate flex-1">{tracks[selectedTrack].name}</h3>
-            <button
-              onClick={onExpandToggle}
-              className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center hover:bg-white/15 transition-colors"
-            >
-              <ChevronUp className="w-4 h-4 text-white/80" />
-            </button>
+      <div 
+        className={`absolute top-0 left-0 z-50 rounded-2xl backdrop-blur-sm border transition-all duration-300 ${
+          isExpanded ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'
+        }`}
+        style={{
+          width: '220px',
+          background: 'rgba(255, 255, 255, 0.03)',
+          borderColor: 'rgba(255, 255, 255, 0.08)',
+        }}
+      >
+        {/* Header */}
+        <div className="flex items-center gap-3 px-3 py-3 border-b" style={{ borderColor: 'rgba(255, 255, 255, 0.08)' }}>
+          <div className="flex-1 min-w-0">
+            <h3 className="text-white font-medium truncate">{t('relaxWidgetTitle')}</h3>
+            <p className="text-white/50 text-xs truncate">{t('relaxWidgetSubtitle')}</p>
           </div>
-          
-          {/* Track cards */}
-          <div className="relative mb-4">
-            <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide px-3" ref={scrollContainerRef} style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-              {trackKeys.map((key) => (
-                <button
-                  key={key}
-                  onClick={() => onTrackChange(key)}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-xl transition-all flex-shrink-0 shadow-sm ${ 
-                    selectedTrack === key 
-                      ? 'border border-white/50' 
-                      : 'border border-white/30 hover:border-white/45'
-                  }`}
-                  style={{
-                    background: selectedTrack === key 
-                      ? 'rgba(255, 255, 255, 0.20)' 
-                      : 'rgba(255, 255, 255, 0.15)',
-                    backdropFilter: 'blur(8px)',
-                  }}
-                  ref={(el) => trackButtonRefs.current[key] = el}
-                >
-                  <div className="flex items-center justify-center flex-shrink-0">
-                    {iconMap[key]}
-                  </div>
-                  <div className="text-left">
-                    <div className="text-xs font-medium text-white whitespace-nowrap">{tracks[key].name}</div>
-                    <div className="text-[10px] text-white/70 whitespace-nowrap">{tracks[key].subtitle}</div>
-                  </div>
-                </button>
-              ))}
-              {/* Spacer для предотвращения ухода последней карточки слишком влево */}
-              <div className="flex-shrink-0 w-8" />
-            </div>
-          </div>
-          
-          {/* Плеер */}
-          <div className="px-3 pb-3">
-            {/* Progress bar */}
-            <div className="mb-3">
-              <div className="h-1 bg-white/20 rounded-full overflow-hidden mb-1.5">
-                <div 
-                  className="h-full rounded-full transition-all"
-                  style={{
-                    width: audioRef.current?.duration 
-                      ? `${(currentTime / audioRef.current.duration) * 100}%` 
-                      : '0%',
-                    background: 'rgba(255, 255, 255, 0.6)',
-                  }}
-                />
-              </div>
-              <div className="flex justify-between text-[10px] text-white/60">
-                <span>{formatTime(currentTime)}</span>
-                <span>{audioRef.current?.duration ? formatTime(audioRef.current.duration) : '0:00'}</span>
-              </div>
-            </div>
-            
-            {/* Кнопки правления */}
-            <div className="flex items-center justify-center gap-6">
+          <button
+            onClick={onExpandToggle}
+            className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors"
+          >
+            <ChevronUp className="w-5 h-5 text-white/60" />
+          </button>
+        </div>
+        
+        {/* Track cards */}
+        <div className="relative my-4">
+          <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide px-3" ref={scrollContainerRef} style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+            {trackKeys.map((key) => (
               <button
-                className="text-white/70 hover:text-white transition-colors"
-                onClick={() => {
-                  const currentIndex = trackKeys.indexOf(selectedTrack);
-                  const prevIndex = currentIndex > 0 ? currentIndex - 1 : trackKeys.length - 1;
-                  onTrackChange(trackKeys[prevIndex]);
-                }}
-              >
-                <SkipBack className="w-4 h-4" />
-              </button>
-              
-              <button
-                onClick={togglePlayPause}
-                className="w-11 h-11 rounded-full flex items-center justify-center transition-all shadow-lg hover:bg-white/30"
+                key={key}
+                onClick={() => onTrackChange(key)}
+                className={`flex items-center gap-2 px-3 py-2 rounded-xl transition-all flex-shrink-0 shadow-sm border ${ 
+                  selectedTrack === key 
+                    ? 'border-white/20' 
+                    : 'border-white/10 hover:border-white/15'
+                }`}
                 style={{
-                  background: 'rgba(255, 255, 255, 0.25)',
+                  background: selectedTrack === key 
+                    ? 'rgba(255, 255, 255, 0.08)' 
+                    : 'rgba(255, 255, 255, 0.03)',
+                  backdropFilter: 'blur(8px)',
                 }}
+                ref={(el) => trackButtonRefs.current[key] = el}
               >
-                {isPlaying ? (
-                  <Pause className="w-5 h-5 text-white" fill="white" />
-                ) : (
-                  <Play className="w-5 h-5 text-white translate-x-[1px]" fill="white" />
-                )}
+                <div className="flex items-center justify-center flex-shrink-0">
+                  {iconMap[key]}
+                </div>
+                <div className="text-left">
+                  <div className="text-xs font-medium text-white whitespace-nowrap">{tracks[key].name}</div>
+                  <div className="text-[10px] text-white/60 whitespace-nowrap">{tracks[key].subtitle}</div>
+                </div>
               </button>
-              
-              <button
-                className="text-white/70 hover:text-white transition-colors"
-                onClick={() => {
-                  const currentIndex = trackKeys.indexOf(selectedTrack);
-                  const nextIndex = currentIndex < trackKeys.length - 1 ? currentIndex + 1 : 0;
-                  onTrackChange(trackKeys[nextIndex]);
-                }}
-              >
-                <SkipForward className="w-4 h-4" />
-              </button>
-            </div>
+            ))}
+            {/* Spacer для предотвращения ухода последней карточки слишком влево */}
+            <div className="flex-shrink-0 w-8" />
           </div>
         </div>
-      )}
+        
+        {/* Плеер */}
+        <div className="px-3 pb-3">
+          {/* Progress bar */}
+          <div className="mb-3">
+            <div className="h-1 bg-white/10 rounded-full overflow-hidden mb-1.5">
+              <div 
+                className="h-full rounded-full transition-all"
+                style={{
+                  width: audioRef.current?.duration 
+                    ? `${(currentTime / audioRef.current.duration) * 100}%` 
+                    : '0%',
+                  background: 'linear-gradient(90deg, #A8D531 0%, #34A853 100%)',
+                }}
+              />
+            </div>
+            <div className="flex justify-between text-[10px] text-white/60">
+              <span>{formatTime(currentTime)}</span>
+              <span>{audioRef.current?.duration ? formatTime(audioRef.current.duration) : '0:00'}</span>
+            </div>
+          </div>
+          
+          {/* Кнопки управления */}
+          <div className="flex items-center justify-center gap-6">
+            <button
+              className="text-white/70 hover:text-white transition-colors"
+              onClick={() => {
+                const currentIndex = trackKeys.indexOf(selectedTrack);
+                const prevIndex = currentIndex > 0 ? currentIndex - 1 : trackKeys.length - 1;
+                onTrackChange(trackKeys[prevIndex]);
+              }}
+            >
+              <SkipBack className="w-4 h-4" />
+            </button>
+            
+            <button
+              onClick={togglePlayPause}
+              className="w-12 h-12 rounded-full flex items-center justify-center transition-all shadow-lg hover:opacity-90"
+              style={{
+                background: 'linear-gradient(100deg, #A8D531 0%, #34A853 100%)',
+              }}
+            >
+              {isPlaying ? (
+                <Pause className="w-5 h-5 text-white" fill="white" />
+              ) : (
+                <Play className="w-5 h-5 text-white translate-x-[1px]" fill="white" />
+              )}
+            </button>
+            
+            <button
+              className="text-white/70 hover:text-white transition-colors"
+              onClick={() => {
+                const currentIndex = trackKeys.indexOf(selectedTrack);
+                const nextIndex = currentIndex < trackKeys.length - 1 ? currentIndex + 1 : 0;
+                onTrackChange(trackKeys[nextIndex]);
+              }}
+            >
+              <SkipForward className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

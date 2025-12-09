@@ -14,7 +14,7 @@ export default function App() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [selectedTrack, setSelectedTrack] = useState<string>("meditation");
-  const [language, setLanguage] = useState<Language>("ru");
+  const [language, setLanguage] = useState<Language>("en");
   const audioRef = useRef<HTMLAudioElement>(null);
 
   const t = (key: keyof typeof translations.en) => translations[language][key];
@@ -155,10 +155,14 @@ export default function App() {
           {/* Language Switcher */}
           <button
             onClick={() => setLanguage(language === "ru" ? "en" : "ru")}
-            className="flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl px-3 py-3 transition-colors flex-shrink-0 h-[56px]"
+            className="flex items-center gap-2 backdrop-blur-sm border rounded-xl px-3 py-3 transition-colors flex-shrink-0 h-[64px]"
+            style={{
+              background: 'rgba(255, 255, 255, 0.03)',
+              borderColor: 'rgba(255, 255, 255, 0.08)',
+            }}
           >
             <Globe className="w-4 h-4 text-white/70" />
-            <span className="text-sm text-white/90">{language === "ru" ? "EN" : "RU"}</span>
+            <span className="text-sm text-white/90">{language === "ru" ? "RU" : "EN"}</span>
           </button>
         </div>
 

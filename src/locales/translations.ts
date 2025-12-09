@@ -19,6 +19,10 @@ export const translations = {
     practices: "Practices",
     meditation: "Meditation",
     
+    // Relaxation widget
+    relaxWidgetTitle: "Practices",
+    relaxWidgetSubtitle: "For your peace",
+    
     // Tracks
     silenceOnTheRoad: "Calm Ride",
     meditationSubtitle: "Meditation",
@@ -57,6 +61,10 @@ export const translations = {
     pauseInMotion: "Пауза в движении",
     practices: "Практики",
     meditation: "Медитация",
+    
+    // Relaxation widget
+    relaxWidgetTitle: "Практики",
+    relaxWidgetSubtitle: "Для вашего спокойствия",
     
     // Tracks
     silenceOnTheRoad: "Пауза в пути",
